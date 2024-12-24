@@ -73,12 +73,51 @@ userRoutes.post('/register', async (req, res): Promise<void> => {
   }
 });
 
+
+/**
+ * @route   POST /api/users/login
+ * @desc    Login user
+ * @access  Public
+ */
+userRoutes.post('/login', async (req, res): Promise<void> => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the user exists
+    const user: IUser | null = await User.findOne({ username });
+    if (!user) {
+      res.status(400).json({ message: 'Invalid username or password' });
+      return;
+    }
+
+    // Validate the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      res.status(400).json({ message: 'Invalid username or password' });
+      return;
+    }
+
+    // Send success response (you can include additional data if needed)
+    res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user._id,
+        username: user.username,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 /**
  * @route   GET /api/users
  * @desc    Get all users
  * @access  Admin only
  */
-userRoutes.get('/', async (_req: Request, res: Response): Promise<void> => {
+userRoutes.get('/', async (_req, res): Promise<void> => {
   try {
     const users = await User.find();
     res.status(200).json(users);
