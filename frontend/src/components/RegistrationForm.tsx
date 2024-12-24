@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
-  const [name, setName] = useState('');
+  const [fname, setFName] = useState('');
+  const [lname, setLName] = useState('');
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +21,8 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     const userData = {
-      name,
+      fname,
+      lname,
       email,
       gender,
       password,
@@ -48,7 +50,8 @@ const RegistrationForm = () => {
 
       if (response.ok) {
         alert('User registered successfully');
-        setName('');
+        setFName('');
+        setLName('');
         setEmail('');
         setGender('');
         setPassword('');
@@ -109,8 +112,8 @@ const RegistrationForm = () => {
                 <input
                 type="text"
                 placeholder="First Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fname}
+                onChange={(e) => setFName(e.target.value)}
                 required
                 style={{width:'438.5px', height:'40px', paddingLeft:'10px'}}
                 />
@@ -120,8 +123,8 @@ const RegistrationForm = () => {
                 <input
                 type="text"
                 placeholder="Last Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={lname}
+                onChange={(e) => setLName(e.target.value)}
                 required
                 style={{width:'438.5px', height:'40px', paddingLeft:'10px'}}
                 />

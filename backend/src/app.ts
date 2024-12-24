@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
+import userRoutes from './routes/userRoutes';
+
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +24,9 @@ connectDB();
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
+
+// Routes
+app.use('/api/users', userRoutes);
 
 // Start server
 app.listen(PORT, () => {
