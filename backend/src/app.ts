@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
+import subjectRouter from './routes/subjectRoutes';
 
 
 // Load environment variables
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/subjects', subjectRouter);
 
 // Start server
 app.listen(PORT, () => {
