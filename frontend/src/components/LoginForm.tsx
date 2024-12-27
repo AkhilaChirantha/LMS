@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -15,9 +17,19 @@ const LoginPage: React.FC = () => {
                 password,
             });
 
+            
             setMessage(response.data.message);
             // Store user info in localStorage or state if needed
             localStorage.setItem('user', JSON.stringify(response.data.user));
+
+             // Navigate based on user role
+             const userRole = response.data.user.role;
+             if (userRole === 'administrator') {
+                 navigate('/subjectadd'); // Path for the subject page
+             } else {
+                 navigate('/'); // Path for the hero page
+             }
+            
         } catch (error: any) {
             setMessage(
                 error.response?.data?.message || 'Something went wrong. Please try again.'
