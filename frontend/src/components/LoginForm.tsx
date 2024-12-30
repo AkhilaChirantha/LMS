@@ -26,8 +26,9 @@ const LoginPage: React.FC = () => {
              const userRole = response.data.user.role;
              if (userRole === 'administrator') {
                  navigate('/subjectadd'); // Path for the subject page
-             } else {
-                 navigate('/'); // Path for the hero page
+             } 
+             if(userRole === 'student') {
+                navigate('/dashboard'); 
              }
             
         } catch (error: any) {

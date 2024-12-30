@@ -2,6 +2,7 @@ import express  from "express";
 import Enrollment from "../models/Enrollment";
 import User from "../models/User";
 import Subject from "../models/Subject";
+import { Types } from "mongoose";
 
 const enrolmentRouter = express.Router();
 
@@ -73,5 +74,50 @@ enrolmentRouter.post('/add', async (req, res) => {
             return;
         }
     })
+
+    // Get Enrollments by username
+   // Get Enrollments by username
+enrolmentRouter.get('/byuser/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        // Find all enrollments for the provided username
+        const enrollments = await Enrollment.find({ username }).lean();
+
+        if (!enrollments.length) {
+            res.status(404).json({ message: 'No enrollments found for this student.' });
+            return;
+        }
+
+        // Enrich enrollments with subject details
+        const results = await Promise.all(
+            enrollments.map(async (enrollment) => {
+                let subjectDetails = null;
+
+                if (typeof enrollment.subjectId === 'string') {
+                    // Find subject by string subjectId
+                    subjectDetails = await Subject.findOne({ subjectId: enrollment.subjectId }).lean();
+                } else if (Types.ObjectId.isValid(enrollment.subjectId)) {
+                    // Find subject by ObjectId
+                    subjectDetails = await Subject.findById(enrollment.subjectId).lean();
+                }
+
+                return {
+                    username: enrollment.username,
+                    subjectId: enrollment.subjectId,
+                    subjectDetails, // Include enriched subject details
+                };
+            })
+        );
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error("Error getting Enrollment by username:", error);
+        res.status(500).json({ message: 'Error fetching enrollments' });
+    }
+});
+
+    
+
 
 export default enrolmentRouter
