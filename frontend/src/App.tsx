@@ -6,6 +6,7 @@ import LoginPage from './components/LoginForm';
 import AddSubjectForm from './pages/AddSubjectForm';
 import SubjectList from './pages/SubjectList';
 import EnrollmentForm from './pages/EnrollmentForm';
+import StudentDashboard from './pages/StudentDashboard';
 
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
       <Route path="/subjectadd" element={<AddSubjectForm />} />
       <Route path="/subjectlist" element={<SubjectList />} />
       <Route path="/enrollsubject" element={<EnrollmentForm />} />
+      <Route path="/dashboard" element={<StudentDashboard />} />
     </Routes>
   );
 };
