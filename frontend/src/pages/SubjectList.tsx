@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SubjectList: React.FC = () => {
     const [subjects, setSubjects] = useState<any[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchSubjects = async () => {
@@ -18,6 +20,7 @@ const SubjectList: React.FC = () => {
     }, []);
 
     return (
+        <>
         <div style={{ maxWidth: '900px', margin: 'auto', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             <h2 style={{ textAlign: 'center' }}>Subjects</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
@@ -43,6 +46,10 @@ const SubjectList: React.FC = () => {
                 </tbody>
             </table>
         </div>
+        <div>
+            <button type="button" onClick={() => navigate('/subjectadd')}> Go Add Subject</button>
+        </div>
+        </>
     );
 };
 
