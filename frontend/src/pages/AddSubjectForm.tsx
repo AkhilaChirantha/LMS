@@ -146,6 +146,21 @@ const AddSubjectForm: React.FC = () => {
                 </button>
             </div>
 
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <button
+                    onClick={() => navigate('/register')}
+                    style={{
+                        padding: '12px 24px',
+                        backgroundColor: '#f0f0f0',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                    }}
+                >
+                    Register Users..
+                </button>
+            </div>
+
             {openSnackbar && (
                 <div
                     style={{

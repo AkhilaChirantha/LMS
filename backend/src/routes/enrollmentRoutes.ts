@@ -59,6 +59,52 @@ enrolmentRouter.post('/add', async (req, res) => {
     
 });
 
+
+// Update grade for an existing enrollment
+enrolmentRouter.patch('/add', async (req, res) => {
+    try {
+        const { username, subjectId, grade } = req.body;
+
+        // Validate inputs
+        if (!username || !subjectId || !grade) {
+            res.status(400).json({ message: 'Please provide all required fields' });
+            return;
+        }
+
+        // Check if the student exists
+        const student = await User.findOne({ username });
+        if (!student) {
+            res.status(404).json({ message: 'Student not found' });
+            return;
+        }
+
+        // Check if the subject exists
+        const subject = await Subject.findOne({ subjectId });
+        if (!subject) {
+            res.status(404).json({ message: 'Subject not found' });
+            return;
+        }
+
+        // Find the existing enrollment
+        const existingEnrollment = await Enrollment.findOne({ username, subjectId });
+        if (!existingEnrollment) {
+            res.status(404).json({ message: 'Enrollment not found for this student and subject.' });
+            return;
+        }
+
+        // Update the grade for the existing enrollment
+        existingEnrollment.grade = grade;
+        await existingEnrollment.save();
+
+        res.status(200).json({ message: 'Grade updated successfully', enrollment: existingEnrollment });
+        return;
+    } catch (error) {
+        console.error("Error updating grade:", error);
+        res.status(500).json({ message: 'Error updating grade' });
+    }
+});
+
+
     //Get All enrollments 
     
     enrolmentRouter.get('/all', async (req, res) => {
@@ -116,6 +162,23 @@ enrolmentRouter.get('/byuser/:username', async (req, res) => {
         res.status(500).json({ message: 'Error fetching enrollments' });
     }
 });
+
+
+    //Get All students' subjects with Grades
+    
+    enrolmentRouter.get('/allresult', async (req, res) => {
+        const { username, subjectId, grade } = req.body;
+        try {
+            const enrollments = await Enrollment.find().populate(username).populate(subjectId).populate(grade);
+            res.status(200).json(enrollments);
+            return;
+
+        } catch (error) {
+            console.error("Error getting Enrollment", error);
+            res.status(500).json({ message: 'Error getting Enrollment' });
+            return;
+        }
+    })
 
     
 

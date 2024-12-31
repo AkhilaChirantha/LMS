@@ -30,6 +30,9 @@ const LoginPage: React.FC = () => {
              if(userRole === 'student') {
                 navigate('/dashboard'); 
              }
+             if(userRole === 'lecturer') {
+                 navigate('/addgrades'); 
+             }
             
         } catch (error: any) {
             setMessage(

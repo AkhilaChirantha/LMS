@@ -7,12 +7,12 @@ const EnrollmentSchema = new Schema({
         required: true,
         validate: {
             validator: (value: any) => {
-                // Validate that value is either a valid ObjectId or a string
                 return Types.ObjectId.isValid(value) || typeof value === "string";
             },
             message: "Invalid subjectId format. Must be an ObjectId or a string."
         }
     },
+    grade: { type: String},
 });
 
 const Enrollment = mongoose.model("Enrollment", EnrollmentSchema);
