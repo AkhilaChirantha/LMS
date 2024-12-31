@@ -13,6 +13,7 @@ interface Enrollment {
   username: string;
   subjectId: string;
   subjectDetails: SubjectDetails | null;
+  grade: string;
 }
 
 const StudentDashboard: React.FC = () => {
@@ -70,6 +71,7 @@ const StudentDashboard: React.FC = () => {
               <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
               <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
               <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
+              <th style={{ border: "1px solid black", padding: "10px" }}>Grade</th>
             </tr>
           </thead>
           <tbody>
@@ -90,6 +92,10 @@ const StudentDashboard: React.FC = () => {
                 <td style={{ border: "1px solid black", padding: "10px" }}>
                   {enrollment.subjectDetails?.credit || "N/A"}
                 </td>
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {enrollment.grade || "N/A"}
+                </td>
+                
               </tr>
             ))}
           </tbody>

@@ -151,6 +151,7 @@ enrolmentRouter.get('/byuser/:username', async (req, res) => {
                 return {
                     username: enrollment.username,
                     subjectId: enrollment.subjectId,
+                    grade: enrollment.grade,
                     subjectDetails, // Include enriched subject details
                 };
             })
