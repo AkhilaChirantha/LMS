@@ -49,6 +49,9 @@ const SubjectList: React.FC = () => {
         <div>
             <button type="button" onClick={() => navigate('/subjectadd')}> Go Add Subject</button>
         </div>
+        <div>
+            <button type="button" onClick={() => navigate('/enrollsubject')}> Enroll Student to Subject</button>
+        </div>
         </>
     );
 };

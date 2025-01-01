@@ -1,14 +1,19 @@
-import mongoose,{Schema, Document} from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-interface IEnrollment extends Document{
-    username: String;
-    subjectId: String;
-}
-
-const EnrollmentSchema: Schema = new Schema({
-    username :{type: "string", required: true, ref:'User' },
-    subjectId: {type: "string", required: true, ref:'Subject' },
+const EnrollmentSchema = new Schema({
+    username: { type: String, required: true, ref: "User" },
+    subjectId: { 
+        type: Schema.Types.Mixed, // Mixed type to accept both ObjectId and string
+        required: true,
+        validate: {
+            validator: (value: any) => {
+                return Types.ObjectId.isValid(value) || typeof value === "string";
+            },
+            message: "Invalid subjectId format. Must be an ObjectId or a string."
+        }
+    },
+    grade: { type: String},
 });
 
-const Enrollment = mongoose.model<IEnrollment>('Enrollment', EnrollmentSchema);
+const Enrollment = mongoose.model("Enrollment", EnrollmentSchema);
 export default Enrollment;
