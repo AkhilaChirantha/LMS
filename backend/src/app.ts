@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
 import subjectRouter from './routes/subjectRoutes';
+import enrolmentRouter from './routes/enrollmentRoutes';
 
 
 // Load environment variables
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/subjects', subjectRouter);
+app.use('/api/enrolments', enrolmentRouter);
 
 // Start server
 app.listen(PORT, () => {

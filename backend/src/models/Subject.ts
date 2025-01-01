@@ -1,6 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-const SubjectSchema = new mongoose.Schema({
+interface ISubject extends Document {
+    year: number;
+    semester: number;
+    subjectId: string;
+    subjectName: string;
+    credit: number;
+  }
+
+const SubjectSchema = new Schema({
     year: { type: String, required: true },
     semester: { type: String, required: true },
     subjectId: { type: String, required: true },
@@ -8,6 +16,6 @@ const SubjectSchema = new mongoose.Schema({
     credit: { type: Number, required: true },
 });
 
-const Subject = mongoose.model('Subject', SubjectSchema);
+const Subject = mongoose.model<ISubject>('Subject', SubjectSchema);
 
 export default Subject;
