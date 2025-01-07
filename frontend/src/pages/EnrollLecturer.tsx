@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-interface Enrollment {
+interface LecEnroll {
   username: string;
   subjectId: string;
-  batch: string;
+  subjectName: string;
 }
 
-const EnrollmentForm: React.FC = () => {
+
+const EnrollLecturer: React.FC = () => {
   const [username, setUsername] = useState('');
   const [subjectId, setSubjectId] = useState('');
-  const [batch, setBatch] = useState('');
   const [message, setMessage] = useState('');
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [lecenrollments, setLecEnrollments] = useState<LecEnroll[]>([]);
 
   // Fetch all enrollments
   const fetchEnrollments = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/enrolments/all');
-      setEnrollments(response.data);
+      const response = await axios.get('http://localhost:5001/api/lecenrollments/alllec');
+      setLecEnrollments(response.data);
     } catch (error) {
       console.error('Error fetching enrollments:', error);
     }
@@ -29,15 +29,13 @@ const EnrollmentForm: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5001/api/enrolments/add', {
+      const response = await axios.post('http://localhost:5001/api/lecenrollments/addlec', {
         username,
         subjectId,
-        batch,
       });
       setMessage(response.data.message);
       setUsername('');
       setSubjectId('');
-      setBatch('');
       fetchEnrollments(); // Refresh the enrollments list
     } catch (error: any) {
       setMessage(
@@ -52,7 +50,7 @@ const EnrollmentForm: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc' }}>
-      <h2>Enroll Student</h2>
+      <h2>Enroll Lecture</h2>
       <form onSubmit={handleEnrollmentSubmit}>
         <div style={{ marginBottom: '15px' }}>
           <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
@@ -90,24 +88,6 @@ const EnrollmentForm: React.FC = () => {
             }}
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="batch" style={{ display: 'block', marginBottom: '5px' }}>
-            Batch:
-          </label>
-          <input
-            id="batch"
-            type="text"
-            value={batch}
-            onChange={(e) => setBatch(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          />
-        </div>
         <button
           type="submit"
           style={{
@@ -130,21 +110,21 @@ const EnrollmentForm: React.FC = () => {
       )}
 
       <h3>Enrolled Students</h3>
-      {enrollments.length > 0 ? (
+      {lecenrollments.length > 0 ? (
         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
           <thead>
             <tr>
               <th style={{ border: '1px solid #ccc', padding: '8px' }}>Username</th>
               <th style={{ border: '1px solid #ccc', padding: '8px' }}>Subject ID</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Batch</th>
+              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Subject Name</th>
             </tr>
           </thead>
           <tbody>
-            {enrollments.map((enrollment, index) => (
+            {lecenrollments.map((enrollment, index) => (
               <tr key={index}>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>{enrollment.username}</td>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>{enrollment.subjectId}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{enrollment.batch}</td>
+                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{enrollment.subjectName}</td>
               </tr>
             ))}
           </tbody>
@@ -156,4 +136,4 @@ const EnrollmentForm: React.FC = () => {
   );
 };
 
-export default EnrollmentForm;
+export default EnrollLecturer;

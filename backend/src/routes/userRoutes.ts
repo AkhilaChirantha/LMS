@@ -23,6 +23,7 @@ userRoutes.post('/register', async (req, res): Promise<void> => {
     phone2,
     username,
     program,
+    batch,
     teachingSubject,
     termsAgreed,
   } = req.body;
@@ -58,6 +59,7 @@ userRoutes.post('/register', async (req, res): Promise<void> => {
       phone2,
       username,
       program,
+      batch,
       teachingSubject,
       termsAgreed,
     });

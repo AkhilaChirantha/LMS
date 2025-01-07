@@ -14,6 +14,7 @@ const RegistrationForm = () => {
   const [phone2, setPhone2] = useState('');
   const [username, setUsername] = useState('');
   const [program, setProgram] = useState('');
+  const [batch, setBatch] = useState('');
   const [teachingSubject, setTeachingSubject] = useState('');
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [error, setError] = useState('');
@@ -38,6 +39,7 @@ const RegistrationForm = () => {
       teachingSubject,
       dob,
       termsAgreed,
+      batch,
     };
 
     try {
@@ -66,6 +68,7 @@ const RegistrationForm = () => {
         setProgram('');
         setTeachingSubject('');
         setDob('');
+        setBatch('');
         setTermsAgreed(false);
 
 
@@ -318,9 +321,31 @@ const RegistrationForm = () => {
           </div>
         )}
         </div>
+
+        <label style={{display:'flex',paddingLeft:'8px',paddingTop:'10px'}}>Select Batch </label>
+<div style={{display:'flex', flexDirection:'row', justifyContent:'center', columnGap:'20px', marginBottom:'10px', paddingTop:'5px',margin:'0 8px 0 8px'}}>
+        {role === 'student' && (
+          <>
+          <div style={{display:'flex', marginTop:'5px'}}>
+        <select
+          value={batch}
+          onChange={(e) => setBatch(e.target.value)}
+          required
+          style={{width:'119.5vh', height:'47px', paddingLeft:'10px'}}
+        >
+          <option value="cis">20/21 Batch</option>
+          <option value="se">21/22 Batch</option>
+          <option value="ds">22/23 Batch</option>
+          <option value="ds">23/24 Batch</option>
+          <option value="ds">24/25 Batch</option>
+        </select>
+        </div>  
+          </>
+        )}
+        </div>
         
       
-        <div style={{display:'flex',flexDirection:'row', columnGap:'60px', paddingTop:'30px',paddingLeft:'8px',}}>
+        <div style={{display:'flex',flexDirection:'row', paddingTop:'10px',paddingLeft:'8px', alignItems:'center',}}>
           <label>
             <input
               type="checkbox"
@@ -328,7 +353,7 @@ const RegistrationForm = () => {
               onChange={(e) => setTermsAgreed(e.target.checked)}
               required
             />
-            I Agree Terms and Conditions
+             Double Checked the All Information.
           </label>
         </div>
 

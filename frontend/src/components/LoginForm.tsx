@@ -31,7 +31,7 @@ const LoginPage: React.FC = () => {
                 navigate('/dashboard'); 
              }
              if(userRole === 'lecturer') {
-                 navigate('/addgrades'); 
+                 navigate('/lecdashboard'); 
              }
             
         } catch (error: any) {

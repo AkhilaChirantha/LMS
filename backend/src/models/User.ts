@@ -13,6 +13,7 @@ export interface IUser extends Document {
   phone2?: string;
   username?: string;
   program?: string;
+  batch?: string;
   teachingSubject?: string;
   termsAgreed: boolean;
 }
@@ -30,6 +31,7 @@ const UserSchema: Schema = new Schema<IUser>({
   phone2: { type: String },
   username: { type: String, unique: true },
   program: { type: String },
+  batch: { type: String, required: true},
   teachingSubject: { type: String },
   termsAgreed: { type: Boolean, required: true },
 });

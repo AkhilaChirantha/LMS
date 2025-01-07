@@ -8,6 +8,8 @@ import SubjectList from './pages/SubjectList';
 import EnrollmentForm from './pages/EnrollmentForm';
 import StudentDashboard from './pages/StudentDashboard';
 import AddGradesForm from './pages/AddGradesForm';
+import EnrollLecturer from './pages/EnrollLecturer';
+import LecturerDashboard from './pages/LecturerDashboard';
 
 
 const App: React.FC = () => {
@@ -21,6 +23,8 @@ const App: React.FC = () => {
       <Route path="/enrollsubject" element={<EnrollmentForm />} />
       <Route path="/dashboard" element={<StudentDashboard />} />
       <Route path="/addgrades" element={<AddGradesForm />} />
+      <Route path="/enrolllec" element={<EnrollLecturer/>} />
+      <Route path="/lecdashboard" element={<LecturerDashboard/>} />
     </Routes>
   );
 };
