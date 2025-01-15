@@ -6,6 +6,7 @@ import connectDB from './config/db';
 import userRoutes from './routes/userRoutes';
 import subjectRouter from './routes/subjectRoutes';
 import enrolmentRouter from './routes/enrollmentRoutes';
+import LecEnrollRouter from './routes/lecEnrollRoutes';
 
 
 // Load environment variables
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/subjects', subjectRouter);
 app.use('/api/enrolments', enrolmentRouter);
+app.use('/api/lecenrollments', LecEnrollRouter);
 
 // Start server
 app.listen(PORT, () => {

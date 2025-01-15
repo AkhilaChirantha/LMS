@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface SubjectDetails {
   subjectId: string;
@@ -9,17 +10,19 @@ interface SubjectDetails {
   credit: number;
 }
 
-interface Enrollment {
+interface LecEnrollment {
   username: string;
   subjectId: string;
   subjectDetails: SubjectDetails | null;
   grade: string;
 }
 
-const StudentDashboard: React.FC = () => {
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+const LecturerDashboard: React.FC = () => {
+  const [enrollments, setEnrollments] = useState<LecEnrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const username = user.username;
@@ -36,7 +39,7 @@ const StudentDashboard: React.FC = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5001/api/enrolments/byuser/${username}`
+          `http://localhost:5001/api/lecenrollments/bylecturer/${username}`
         );
         setEnrollments(response.data);
       } catch (err: any) {
@@ -66,7 +69,7 @@ const StudentDashboard: React.FC = () => {
     }
 
     return acc;
-  }, {} as Record<string, Enrollment[]>);
+  }, {} as Record<string, LecEnrollment[]>);
 
   // Sort the groups by year and semester
   const sortedGroups = Object.entries(groupedEnrollments).sort(([keyA], [keyB]) => {
@@ -96,22 +99,18 @@ const StudentDashboard: React.FC = () => {
         <p>No enrolled subjects found.</p>
       ) : (
         sortedGroups.map(([key, enrollmentGroup]) => {
-          const [year, semester] = key.split("-");
+          
 
           return (
             <div key={key} style={{ marginBottom: "40px" }}>
-              <h3>
-                Year {year}, Semester {semester}
-              </h3>
+
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Grade</th>
+                    <th style={{ border: "1px solid black", padding: "10px" }}>Add Grades</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -123,17 +122,8 @@ const StudentDashboard: React.FC = () => {
                       <td style={{ border: "1px solid black", padding: "10px" }}>
                         {enrollment.subjectDetails?.subjectName || "N/A"}
                       </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.year || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.semester || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.credit || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.grade || "N/A"}
+                      <td style={{ border: "1px solid black", padding: "10px",textAlign:'center'  }}>
+                        <button type="button" onClick={() => navigate('/addgrades', { state: { subjectId: enrollment.subjectDetails?.subjectId } })}>Go</button>
                       </td>
                     </tr>
                   ))}
@@ -147,4 +137,4 @@ const StudentDashboard: React.FC = () => {
   );
 };
 
-export default StudentDashboard;
+export default LecturerDashboard;
