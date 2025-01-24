@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 interface SubjectDetails {
   subjectId: string;
   subjectName: string;
-  year: number;
-  semester: number;
+  year: string;
+  semester: string;
   credit: number;
 }
 
