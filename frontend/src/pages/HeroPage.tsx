@@ -1,7 +1,12 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeropageImage from '../assets/Heropage.png'; // Adjust this path if needed
 
+
 const HeroPage = () => {
+
+  const navigate = useNavigate();
+ 
+  
   return (
     <div
       style={{
@@ -54,6 +59,8 @@ const HeroPage = () => {
               fontWeight: 'bold',
               cursor: 'pointer',
             }}
+
+            onClick={() => navigate('/login')}
           >
             Login
           </button>
