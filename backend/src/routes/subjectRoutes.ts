@@ -33,4 +33,19 @@ subjectRouter.get('/', async (req, res) => {
     }
 });
 
+// get the subject next to the calculated semester
+subjectRouter.get('/sem', async (req, res) => {
+    const { year, semester } = req.query;
+    try {
+        const query: any = {};
+        if (year) query.year = year;
+        if (semester) query.semester = semester;
+
+        const subjects = await Subject.find(query);
+        res.status(200).json(subjects);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch subjects', error });
+    }
+});
+
 export default subjectRouter;
