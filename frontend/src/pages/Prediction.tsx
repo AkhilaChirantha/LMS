@@ -45,10 +45,59 @@ const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
     return "Below Degree Classification";
   }
 
+  const calculateGPAToNextClass = (currentGPA: number): { 
+    currentClass: string, 
+    nextClass: string | null, 
+    requiredGPA: number | null 
+  } => {
+    // Determine current classification
+    let currentClass = "";
+    let nextClass: string | null = null;
+    let nextClassThreshold = 0;
+  
+    if (currentGPA >= 3.7) {
+      currentClass = "First Class Degree";
+      nextClass = null; // Already at the highest classification
+      return { currentClass, nextClass, requiredGPA: null };
+
+    } else if (currentGPA >= 3.2) {
+      currentClass = "Second Upper Class Degree";
+      nextClass = "First Class Degree";
+      nextClassThreshold = 3.7;
+
+    } else if (currentGPA >= 2.7) {
+      currentClass = "Second Lower Class Degree";
+      nextClass = "Second Upper Class Degree";
+      nextClassThreshold = 3.2;
+      
+    } else if (currentGPA >= 2.0) {
+      currentClass = "General Class Degree";
+      nextClass = "Second Lower Class Degree";
+      nextClassThreshold = 2.7;
+    } else {
+      currentClass = "Below Degree Classification";
+      nextClass = "General Class Degree";
+      nextClassThreshold = 2.0;
+    }
+  
+    // Calculate required GPA for next class
+    // Assuming one more semester will be added to the current GPA calculation
+    const requiredGPA = (
+      (nextClassThreshold * (currentGPA < 1 ? 1 : 2)) - currentGPA
+    );
+  
+    return {
+      currentClass,
+      nextClass,
+      requiredGPA: requiredGPA > 0 ? requiredGPA : null
+    };
+  };
+
 
   const CurrentGPATable: React.FC<{ yearWiseGPA: YearGPA[] }> = ({ yearWiseGPA }) => {
     const currentGPA = calculateCurrentGPA(yearWiseGPA);
     const degreeClass = getDegreeClassification(currentGPA);
+    const gpaPrediction = calculateGPAToNextClass(currentGPA);
 
   return (
     <div style={{ width: '100%', marginTop: '20px' }}>
@@ -86,8 +135,22 @@ const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
           </tr>
         </tbody>
       </table>
-      <div style={{ marginTop: '20px' }}>Degree Classification: <strong style={{color:'blue'}}>{degreeClass}</strong></div>
+     
+      <div style={{ marginTop: '20px' }}>
+        <div>Degree Classification: <strong style={{color:'blue'}}>{degreeClass}</strong></div>
+        
+        {gpaPrediction.nextClass && gpaPrediction.requiredGPA !== null ? (
+          <div style={{ marginTop: '10px', color: 'green' }}>
+            To reach {gpaPrediction.nextClass}, you need to score at least {gpaPrediction.requiredGPA.toFixed(2)} GPA in the next semester.
+          </div>
+        ) : (
+          <div style={{ marginTop: '10px', color: 'green' }}>
+            You are already at the highest degree classification!
+          </div>
+        )}
+      </div>
     </div>
+    
   );
 };
 
@@ -115,6 +178,7 @@ const PredictionPage: React.FC = () => {
 
     
     </div>
+    
   );
 };
 
