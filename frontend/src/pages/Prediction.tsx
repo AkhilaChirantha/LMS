@@ -7,35 +7,36 @@ interface SemesterGPA {
   semester: string;
 }
 
-interface YearGPA {
-  year: string;
-  yearGPA: number;
-}
+const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
+  // Group semesters by year with combined GPA
+  const yearWiseData = useMemo(() => {
+    const yearGroups: { [key: string]: { semesters: SemesterGPA[], yearGPA: number } } = {};
 
-const calculateYearWiseGPA = (semesterGPAValues: SemesterGPA[]): YearGPA[] => {
-  const yearGPAMap = new Map<string, number[]>();
+    semesterGPAValues.forEach(sem => {
+      if (!yearGroups[sem.year]) {
+        yearGroups[sem.year] = { semesters: [], yearGPA: 0 };
+      }
+      yearGroups[sem.year].semesters.push(sem);
+    });
 
-  semesterGPAValues.forEach(semester => {
-    if (!yearGPAMap.has(semester.year)) {
-      yearGPAMap.set(semester.year, []);
-    }
-    yearGPAMap.get(semester.year)?.push(semester.semGPA);
-  });
+    // Calculate year GPA
+    Object.keys(yearGroups).forEach(year => {
+      const validSemesters = yearGroups[year].semesters.filter(sem => sem.semGPA > 0);
+      if (validSemesters.length > 0) {
+        const totalGPA = validSemesters.reduce((sum, sem) => sum + sem.semGPA, 0);
+        yearGroups[year].yearGPA = totalGPA / validSemesters.length;
+      }
+    });
 
-  const yearGPAs: YearGPA[] = [];
-  yearGPAMap.forEach((semGPAs, year) => {
-    const yearGPA = semGPAs.reduce((sum, gpa) => sum + gpa, 0) / semGPAs.length;
-    yearGPAs.push({ year, yearGPA });
-  });
+    return yearGroups;
+  }, [semesterGPAValues]);
 
-  return yearGPAs.sort((a, b) => Number(a.year) - Number(b.year));
-};
-
-const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
-  const nonZeroYearGPAs = yearWiseGPA.filter(yearData => yearData.yearGPA > 0);
-  const totalYearGPA = nonZeroYearGPAs.reduce((sum, yearData) => sum + yearData.yearGPA, 0);
-  return nonZeroYearGPAs.length > 0 ? totalYearGPA / nonZeroYearGPAs.length : 0;
-};
+  // Calculate overall current GPA
+  const currentGPA = useMemo(() => {
+    const validSemesters = semesterGPAValues.filter((sem) => sem.semGPA > 0);
+    const totalGPA = validSemesters.reduce((sum, sem) => sum + sem.semGPA, 0);
+    return validSemesters.length > 0 ? totalGPA / validSemesters.length : 0;
+  }, [semesterGPAValues]);
 
   const getDegreeClassification = (currentGPA: number): string => {
     if (currentGPA >= 3.7) return "First Class Degree";
@@ -43,33 +44,29 @@ const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
     if (currentGPA >= 2.7) return "Second Lower Class Degree";
     if (currentGPA >= 2.0) return "General Class Degree";
     return "Below Degree Classification";
-  }
+  };
 
-  const calculateGPAToNextClass = (currentGPA: number): { 
-    currentClass: string, 
-    nextClass: string | null, 
-    requiredGPA: number | null 
+  const calculateGPAToNextClass = (currentGPA: number): {
+    currentClass: string;
+    nextClass: string | null;
+    requiredGPA: number | null;
   } => {
-    // Determine current classification
     let currentClass = "";
     let nextClass: string | null = null;
     let nextClassThreshold = 0;
-  
+
     if (currentGPA >= 3.7) {
       currentClass = "First Class Degree";
-      nextClass = null; // Already at the highest classification
+      nextClass = null;
       return { currentClass, nextClass, requiredGPA: null };
-
     } else if (currentGPA >= 3.2) {
       currentClass = "Second Upper Class Degree";
       nextClass = "First Class Degree";
       nextClassThreshold = 3.7;
-
     } else if (currentGPA >= 2.7) {
       currentClass = "Second Lower Class Degree";
       nextClass = "Second Upper Class Degree";
       nextClassThreshold = 3.2;
-      
     } else if (currentGPA >= 2.0) {
       currentClass = "General Class Degree";
       nextClass = "Second Lower Class Degree";
@@ -79,29 +76,23 @@ const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
       nextClass = "General Class Degree";
       nextClassThreshold = 2.0;
     }
-  
-    // Calculate required GPA for next class
-    // Assuming one more semester will be added to the current GPA calculation
-    const requiredGPA = (
-      (nextClassThreshold * (currentGPA < 1 ? 1 : 2)) - currentGPA
-    );
-  
+
+    // Simplified required GPA calculation
+    const requiredGPA = nextClassThreshold;
+
     return {
       currentClass,
       nextClass,
-      requiredGPA: requiredGPA > 0 ? requiredGPA : null
+      requiredGPA: requiredGPA > 0 ? requiredGPA : null,
     };
   };
 
-
-  const CurrentGPATable: React.FC<{ yearWiseGPA: YearGPA[] }> = ({ yearWiseGPA }) => {
-    const currentGPA = calculateCurrentGPA(yearWiseGPA);
-    const degreeClass = getDegreeClassification(currentGPA);
-    const gpaPrediction = calculateGPAToNextClass(currentGPA);
+  const degreeClassification = getDegreeClassification(currentGPA);
+  const { currentClass, nextClass, requiredGPA } = calculateGPAToNextClass(currentGPA);
 
   return (
-    <div style={{ width: '100%', marginTop: '20px' }}>
-      <h2>Current GPA Calculation</h2>
+    <div style={{ width: "100%", marginTop: "20px" }}>
+      <h2>Semester-Wise GPA Calculation</h2>
       <table
         style={{
           width: "100%",
@@ -111,46 +102,61 @@ const calculateCurrentGPA = (yearWiseGPA: YearGPA[]): number => {
         <thead>
           <tr>
             <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Semester GPA</th>
             <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
           </tr>
         </thead>
         <tbody>
-          {yearWiseGPA.map((yearData, index) => (
-            <tr key={index}>
-              <td style={{ border: "1px solid black", padding: "10px" }}>
-                {yearData.year}
-              </td>
-              <td style={{ border: "1px solid black", padding: "10px" }}>
-                {yearData.yearGPA.toFixed(2)}
-              </td>
-            </tr>
-          ))}
+          {Object.entries(yearWiseData).flatMap(([year, data]) => 
+            data.semesters.map((sem, index) => (
+              <tr key={`${year}-${sem.semester}`}>
+                {index === 0 && (
+                  <td 
+                    style={{ border: "1px solid black", padding: "10px" }} 
+                    rowSpan={data.semesters.length}
+                  >
+                    {year}
+                  </td>
+                )}
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {sem.semester}
+                </td>
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {sem.semGPA.toFixed(2)}
+                </td>
+                {index === 0 && (
+                  <td 
+                    style={{ border: "1px solid black", padding: "10px" }} 
+                    rowSpan={data.semesters.length}
+                  >
+                    {data.yearGPA.toFixed(2)}
+                  </td>
+                )}
+              </tr>
+            ))
+          )}
           <tr>
-            <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
-              Current GPA
+            <td colSpan={2} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
+              Cumulative GPA
             </td>
-            <td style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
+            <td colSpan={2} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
               {currentGPA.toFixed(2)}
             </td>
           </tr>
         </tbody>
       </table>
-     
-      <div style={{ marginTop: '20px' }}>
-        <div>Degree Classification: <strong style={{color:'blue'}}>{degreeClass}</strong></div>
-        
-        {gpaPrediction.nextClass && gpaPrediction.requiredGPA !== null ? (
-          <div style={{ marginTop: '10px', color: 'green' }}>
-            To reach {gpaPrediction.nextClass}, you need to score at least {gpaPrediction.requiredGPA.toFixed(2)} GPA in the next semester.
-          </div>
+      <div style={{ marginTop: "20px" }}>
+        <p><strong>Degree Classification:</strong> <strong style={{color:'#ec08d8', fontSize:'20px'}}>{degreeClassification}</strong> </p>
+        {nextClass && requiredGPA !== null ? (
+          <p>
+            To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
+          </p>
         ) : (
-          <div style={{ marginTop: '10px', color: 'green' }}>
-            You are already at the highest degree classification!
-          </div>
+          <p>You are already at the highest degree classification.</p>
         )}
       </div>
     </div>
-    
   );
 };
 
@@ -159,26 +165,15 @@ const PredictionPage: React.FC = () => {
 
   const semesterGPAValues: SemesterGPA[] = location.state?.semesterGPAValues || [];
 
-  const yearWiseGPA = useMemo(() => {
-    return calculateYearWiseGPA(semesterGPAValues);
-  }, [semesterGPAValues]);
-
   if (semesterGPAValues.length === 0) {
-    return (
-      <p>No GPA details available. Please navigate from the dashboard to view details.</p>
-    );
+    return <p>No GPA details available. Please navigate from the dashboard to view details.</p>;
   }
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>Prediction Page</h1>
-      
-      {/* Current GPA Table */}
-      <CurrentGPATable yearWiseGPA={yearWiseGPA} />
-
-    
+      <CurrentGPATable semesterGPAValues={semesterGPAValues} />
     </div>
-    
   );
 };
 
