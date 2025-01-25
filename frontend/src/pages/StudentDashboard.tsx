@@ -106,9 +106,9 @@ const StudentDashboard: React.FC = () => {
     return Number(yearA) - Number(yearB);
   });
 
-  // Handle navigation to the Prediction page
+  // Handle navigation to the GPA Details page
   const handleViewDetails = (semesterGPAValues: { year: string; semester: string; semGPA: number }[]) => {
-    navigate("/prediction", {
+    navigate("/gpadetails", {
       state: { semesterGPAValues },
     });
   };
