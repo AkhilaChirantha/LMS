@@ -14,7 +14,7 @@ const HeroPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 'auto',
-        backgroundColor: '#F5FAFF',
+        background: 'linear-gradient(135deg, #142A55FF, #FFFFFFFF)' ,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -39,7 +39,7 @@ const HeroPage = () => {
         <p
           style={{
             fontSize: '20px',
-            color: '#4F4F4F',
+            color: '#FFFFFF',
             lineHeight: '1.8',
           }}
         >
@@ -50,10 +50,10 @@ const HeroPage = () => {
         <div style={{ marginTop: '40px' }}>
           <button
             style={{
-              padding: '20px 60px',
+              padding: '15px 55px',
               borderRadius: '30px',
               border: 'none',
-              backgroundImage: 'linear-gradient(90deg, #2196F3, #21CBF3)',
+              backgroundImage: 'linear-gradient(90deg,rgb(37, 85, 217),rgb(32, 151, 225))',
               color: '#fff',
               fontSize: '18px',
               fontWeight: 'bold',
