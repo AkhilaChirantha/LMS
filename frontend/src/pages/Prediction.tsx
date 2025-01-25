@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axios from 'axios';
 
 interface SemesterGPA {
   semGPA: number;
@@ -7,7 +8,74 @@ interface SemesterGPA {
   semester: string;
 }
 
+interface Subject {
+  year: string;
+  semester: string;
+  subjectId: string;
+  subjectName: string;
+  credit: number;
+}
+
 const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
+  const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
+
+  // Determine the next semester to fetch subjects for
+  const nextSemester = useMemo(() => {
+    if (semesterGPAValues.length === 0) return null;
+
+    // Find the first semester with zero GPA
+    const zeroGPASemester = semesterGPAValues.find(sem => sem.semGPA === 0);
+
+    if (zeroGPASemester) {
+      return {
+        year: zeroGPASemester.year,
+        semester: zeroGPASemester.semester
+      };
+    }
+
+    // If no zero GPA semester, fall back to previous logic
+    const sortedSemesters = [...semesterGPAValues].sort((a, b) => {
+      if (a.year !== b.year) return parseInt(a.year) - parseInt(b.year);
+      return a.semester === 'First' ? -1 : 1;
+    });
+
+    const lastSemester = sortedSemesters[sortedSemesters.length - 1];
+    
+    // Determine next semester
+    let nextYear = lastSemester.year;
+    let nextSemesterName = 'Second';
+
+    // If last semester is Second, move to next year's First semester
+    if (lastSemester.semester === 'Second') {
+      nextYear = (parseInt(lastSemester.year) + 1).toString();
+      nextSemesterName = 'First';
+    }
+
+    return { year: nextYear, semester: nextSemesterName };
+  }, [semesterGPAValues]);
+
+  // Fetch subjects for the next semester
+  useEffect(() => {
+    const fetchNextSemesterSubjects = async () => {
+      if (!nextSemester) return;
+
+      try {
+        const response = await axios.get<Subject[]>('http://localhost:5001/api/subjects/sem', {
+          params: {
+            year: nextSemester.year,
+            semester: nextSemester.semester
+          }
+        });
+
+        setNextSemesterSubjects(response.data);
+      } catch (error) {
+        console.error('Failed to fetch next semester subjects:', error);
+      }
+    };
+
+    fetchNextSemesterSubjects();
+  }, [nextSemester]);
+
   // Group semesters by year with combined GPA
   const yearWiseData = useMemo(() => {
     const yearGroups: { [key: string]: { semesters: SemesterGPA[], yearGPA: number } } = {};
@@ -93,12 +161,7 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <h2>Semester-Wise GPA Calculation</h2>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-        }}
-      >
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
             <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
@@ -137,10 +200,10 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
             ))
           )}
           <tr>
-            <td colSpan={2} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
+            <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
               Cumulative GPA
             </td>
-            <td colSpan={2} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
+            <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
               {currentGPA.toFixed(2)}
             </td>
           </tr>
@@ -154,6 +217,33 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
           </p>
         ) : (
           <p>You are already at the highest degree classification.</p>
+        )}
+      </div>
+
+      {/* Next Semester Subjects Section */}
+      <div style={{ marginTop: "20px" }}>
+        <h3>Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})</h3>
+        {nextSemesterSubjects.length > 0 ? (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nextSemesterSubjects.map((subject) => (
+                <tr key={subject.subjectId}>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectId}</td>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectName}</td>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.credit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No subjects found for the next semester.</p>
         )}
       </div>
     </div>
