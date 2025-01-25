@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+// Define the structure for SubjectDetails and Enrollment interfaces
 interface SubjectDetails {
   subjectId: string;
   subjectName: string;
-  year: number;
-  semester: number;
+  year: string;
+  semester: string;
   credit: number;
 }
 
@@ -21,9 +23,35 @@ const StudentDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Retrieve username from localStorage
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const username = user.username;
 
+  // Map grades to GPA values
+  const gradeToGPA: Record<string, number> = {
+    "A+": 4.0,
+    "A": 4.0,
+    "A-": 3.7,
+    "B+": 3.3,
+    "B": 3.0,
+    "B-": 2.7,
+    "C+": 2.3,
+    "C": 2.0,
+    "C-": 1.7,
+    "D+": 1.3,
+    "D": 1.0,
+    "D-": 0.0,
+  };
+
+  // Function to calculate GPA value for a grade and credit
+  const calculateGPA = (grade: string, credit: number) => {
+    const gpa = gradeToGPA[grade] || 0;
+    return gpa * credit;
+  };
+
+  const navigate = useNavigate();
+
+  // Fetch enrollments for the logged-in user
   useEffect(() => {
     const fetchEnrollments = async () => {
       try {
@@ -68,80 +96,116 @@ const StudentDashboard: React.FC = () => {
     return acc;
   }, {} as Record<string, Enrollment[]>);
 
-  // Sort the groups by year and semester
+  // Sort groups by year and semester
   const sortedGroups = Object.entries(groupedEnrollments).sort(([keyA], [keyB]) => {
-    const [yearA, semesterA] = keyA.split("-").map(Number);
-    const [yearB, semesterB] = keyB.split("-").map(Number);
+    const [yearA, semesterA] = keyA.split("-");
+    const [yearB, semesterB] = keyB.split("-");
     if (yearA === yearB) {
-      return semesterA - semesterB;
+      return Number(semesterA) - Number(semesterB);
     }
-    return yearA - yearB;
+    return Number(yearA) - Number(yearB);
   });
 
-  // Sort the enrollments within each group
-  sortedGroups.forEach(([key, enrollmentGroup]) => {
-    enrollmentGroup.sort((a, b) => {
-      if (a.subjectDetails && b.subjectDetails) {
-        return a.subjectDetails.subjectName.localeCompare(b.subjectDetails.subjectName);
-      }
-      return 0;
+  // Handle navigation to the GPA Details page
+  const handleViewDetails = (semesterGPAValues: { year: string; semester: string; semGPA: number }[]) => {
+    navigate("/gpadetails", {
+      state: { semesterGPAValues },
     });
-  });
+  };
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>Welcome, {username}</h1>
-      <h2>Your Enrolled Subjects</h2>
       {sortedGroups.length === 0 ? (
         <p>No enrolled subjects found.</p>
       ) : (
-        sortedGroups.map(([key, enrollmentGroup]) => {
-          const [year, semester] = key.split("-");
+        <>
+          {sortedGroups.map(([key, enrollmentGroup]) => {
+            const [year, semester] = key.split("-");
+            let totalCredits = 0;
+            let totalGPA = 0;
 
-          return (
-            <div key={key} style={{ marginBottom: "40px" }}>
-              <h3>
-                Year {year}, Semester {semester}
-              </h3>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                  <tr>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
-                    <th style={{ border: "1px solid black", padding: "10px" }}>Grade</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {enrollmentGroup.map((enrollment, index) => (
-                    <tr key={index}>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.subjectId || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.subjectName || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.year || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.semester || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.subjectDetails?.credit || "N/A"}
-                      </td>
-                      <td style={{ border: "1px solid black", padding: "10px" }}>
-                        {enrollment.grade || "N/A"}
-                      </td>
+            enrollmentGroup.forEach((enrollment) => {
+              const credit = enrollment.subjectDetails?.credit || 0;
+              const gpaValue = calculateGPA(enrollment.grade, credit);
+              totalCredits += credit;
+              totalGPA += gpaValue;
+            });
+
+            const semGPA = totalCredits > 0 ? totalGPA / totalCredits : 0;
+
+            return (
+              <div key={key} style={{ marginBottom: "40px" }}>
+                <h3>
+                  Year {year}, Semester {semester}
+                </h3>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
+                      <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
+                      <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
+                      <th style={{ border: "1px solid black", padding: "10px" }}>Grade</th>
+                      <th style={{ border: "1px solid black", padding: "10px" }}>GPA Value</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })
+                  </thead>
+                  <tbody>
+                    {enrollmentGroup.map((enrollment, index) => (
+                      <tr key={index}>
+                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                          {enrollment.subjectDetails?.subjectId || "N/A"}
+                        </td>
+                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                          {enrollment.subjectDetails?.subjectName || "N/A"}
+                        </td>
+                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                          {enrollment.subjectDetails?.credit || "N/A"}
+                        </td>
+                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                          {enrollment.grade || "N/A"}
+                        </td>
+                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                          {enrollment.grade
+                            ? calculateGPA(enrollment.grade, enrollment.subjectDetails?.credit || 0).toFixed(2)
+                            : "N/A"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ marginTop: "15px" }}>
+                  <p>Total GPA: {totalGPA.toFixed(2)}</p>
+                  <p>Total Credits: {totalCredits}</p>
+                  <p style={{ color: "blue", fontSize: "20px" }}>
+                    Semester Final GPA: {semGPA.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+          <button
+            onClick={() => {
+              const semesterGPAValues = sortedGroups.map(([key, enrollmentGroup]) => {
+                const [year, semester] = key.split("-");
+                let totalCredits = 0;
+                let totalGPA = 0;
+
+                enrollmentGroup.forEach((enrollment) => {
+                  const credit = enrollment.subjectDetails?.credit || 0;
+                  const gpaValue = calculateGPA(enrollment.grade, credit);
+                  totalCredits += credit;
+                  totalGPA += gpaValue;
+                });
+
+                const semGPA = totalCredits > 0 ? totalGPA / totalCredits : 0;
+                return { year, semester, semGPA };
+              });
+              handleViewDetails(semesterGPAValues);
+            }}
+          >
+            View All Semester GPA Details
+          </button>
+        </>
       )}
     </div>
   );

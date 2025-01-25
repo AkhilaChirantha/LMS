@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface ISubject extends Document {
-    year: number;
-    semester: number;
+    year: string;
+    semester: string;
     subjectId: string;
     subjectName: string;
     credit: number;

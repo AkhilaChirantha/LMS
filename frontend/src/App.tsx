@@ -10,6 +10,9 @@ import StudentDashboard from './pages/StudentDashboard';
 import AddGradesForm from './pages/AddGradesForm';
 import EnrollLecturer from './pages/EnrollLecturer';
 import LecturerDashboard from './pages/LecturerDashboard';
+import GPAdetails from './pages/GPADetails';
+import PredictionPage from './pages/Prediction';
+
 
 
 const App: React.FC = () => {
@@ -25,6 +28,9 @@ const App: React.FC = () => {
       <Route path="/addgrades" element={<AddGradesForm />} />
       <Route path="/enrolllec" element={<EnrollLecturer/>} />
       <Route path="/lecdashboard" element={<LecturerDashboard/>} />
+      <Route path="/gpadetails" element={<GPAdetails/>} />
+      <Route path="/prediction" element={<PredictionPage/>} />
+   
     </Routes>
   );
 };
