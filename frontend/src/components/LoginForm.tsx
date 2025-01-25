@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdLockOutline } from 'react-icons/md';
 import { LuUserRound } from 'react-icons/lu';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaRegCircleUser } from 'react-icons/fa6';
-
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +11,14 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  // Load remembered username and password
+  useEffect(() => {
+    const savedPassword = localStorage.getItem('rememberedPassword');
+    if (savedPassword) {
+      setPassword(savedPassword);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,10 +39,17 @@ const LoginPage = () => {
         throw new Error(data.message || 'Login failed');
       }
 
-      setMessage(data.message);
+      setMessage('');
       localStorage.setItem('user', JSON.stringify(data.user));
 
+      if (rememberMe) {
+        localStorage.setItem('rememberedPassword', password);
+      } else {
+        localStorage.removeItem('rememberedPassword');
+      }
+
       const userRole = data.user.role;
+
       switch (userRole) {
         case 'administrator':
           window.location.href = '/subjectadd';
@@ -50,7 +64,7 @@ const LoginPage = () => {
           setMessage('Unknown user role');
       }
     } catch (error) {
-      setMessage(error.message || 'Something went wrong. Please try again.');
+      setMessage('Invalid username or password');
     } finally {
       setLoading(false);
     }
@@ -65,7 +79,7 @@ const LoginPage = () => {
         minHeight: '100vh',
         width: 'auto',
         height: 'auto',
-        background: 'linear-gradient(135deg, #3F62A5FF, #9822B6FF)',
+        background: 'linear-gradient(135deg, #142A55FF, #FFFFFFFF)' ,
         color: '#fff',
         fontFamily: 'Arial, sans-serif',
         padding: '20px',
@@ -73,17 +87,18 @@ const LoginPage = () => {
       }}
     >
       <div
-        style={{
-          width: '100%',
-          maxWidth: '700px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          borderRadius: '12px',
-          overflow: 'hidden',
-          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
-          backgroundColor: '#1c1c3c',
-        }}
-      >
+    style={{
+    width: '100%',
+    maxWidth: '700px',
+    display: 'flex',
+    maxHeight: '1000px', // Increased height
+    flexWrap: 'wrap',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
+    backgroundColor: '#1c1c3c',
+  }}
+>
         {/* Left Panel */}
         <div
           style={{
@@ -118,7 +133,7 @@ const LoginPage = () => {
               gap: '20px',
             }}
           >
-            {/* Username Field with Icon */}
+            {/* Username Field */}
             <div
               style={{
                 display: 'flex',
@@ -146,7 +161,7 @@ const LoginPage = () => {
               />
             </div>
 
-            {/* Password Field with Icon */}
+            {/* Password Field */}
             <div
               style={{
                 display: 'flex',
@@ -222,8 +237,21 @@ const LoginPage = () => {
             >
               {loading ? 'Signing in...' : 'Login'}
             </button>
-           
           </form>
+
+          {/* Display error message */}
+          {message && (
+            <div
+              style={{
+                marginTop: '20px',
+                color: '#ff4c4c',
+                fontSize: '16px',
+                fontWeight: 'bold',
+              }}
+            >
+              {message}
+            </div>
+          )}
         </div>
 
         {/* Right Panel */}
@@ -241,8 +269,7 @@ const LoginPage = () => {
             minWidth: '300px',
           }}
         >
-          <h1 style={{ fontSize: '40px', marginBottom: '20px', marginLeft:"80px" }}>Welcome</h1>
-          
+          <h1 style={{ fontSize: '40px', marginBottom: '20px', marginLeft: '80px' }}>Welcome</h1>
         </div>
       </div>
     </div>

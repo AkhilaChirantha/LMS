@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 // Define the structure for SubjectDetails and Enrollment interfaces
 interface SubjectDetails {
   subjectId: string;
@@ -26,6 +27,7 @@ const StudentDashboard: React.FC = () => {
   // Retrieve username from localStorage
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const username = user.username;
+  const indexNumber = user.indexNumber || "N/A"; // Assuming index number is stored in user
 
   // Map grades to GPA values
   const gradeToGPA: Record<string, number> = {
@@ -114,10 +116,33 @@ const StudentDashboard: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Welcome, {username}</h1>
+    <div style={{
+      padding: "20px", 
+      background: 'linear-gradient(135deg, #556B97FF, #FFFFFFFF)' ,
+      minHeight: "100vh",
+      
+    }}>
+      {/* Navigation Bar */}
+      <div style={{
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        padding: "20px", 
+        backgroundColor: "#BBC6E0FF", 
+        borderRadius: "10px", 
+        marginBottom: "20px", 
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+      }}>
+        <div style={{ color: "white", fontSize: "22px", fontWeight: "500" }}>
+          <span>Welcome, {username}</span> 
+        </div>
+        <div>
+          <img src={user?.image || "image.png"} alt="" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+        </div>
+      </div>
+
       {sortedGroups.length === 0 ? (
-        <p>No enrolled subjects found.</p>
+        <p style={{ fontSize: "18px", color: "#333", fontWeight: "300" }}>No enrolled subjects found.</p>
       ) : (
         <>
           {sortedGroups.map(([key, enrollmentGroup]) => {
@@ -135,36 +160,48 @@ const StudentDashboard: React.FC = () => {
             const semGPA = totalCredits > 0 ? totalGPA / totalCredits : 0;
 
             return (
-              <div key={key} style={{ marginBottom: "40px" }}>
-                <h3>
+              <div key={key} style={{
+                marginBottom: "40px", 
+                background: "#fff", 
+                padding: "25px", 
+                borderRadius: "10px", 
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}>
+                <h3 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>
                   Year {year}, Semester {semester}
                 </h3>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <table style={{
+                  width: "100%", 
+                  borderCollapse: "collapse", 
+                  backgroundColor: "#f9f9f9", 
+                  borderRadius: "8px", 
+                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)"
+                }}>
                   <thead>
                     <tr>
-                      <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
-                      <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
-                      <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
-                      <th style={{ border: "1px solid black", padding: "10px" }}>Grade</th>
-                      <th style={{ border: "1px solid black", padding: "10px" }}>GPA Value</th>
+                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Subject ID</th>
+                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Subject Name</th>
+                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Credits</th>
+                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Grade</th>
+                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>GPA Value</th>
                     </tr>
                   </thead>
                   <tbody>
                     {enrollmentGroup.map((enrollment, index) => (
                       <tr key={index}>
-                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
                           {enrollment.subjectDetails?.subjectId || "N/A"}
                         </td>
-                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
                           {enrollment.subjectDetails?.subjectName || "N/A"}
                         </td>
-                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
                           {enrollment.subjectDetails?.credit || "N/A"}
                         </td>
-                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
                           {enrollment.grade || "N/A"}
                         </td>
-                        <td style={{ border: "1px solid black", padding: "10px" }}>
+                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
                           {enrollment.grade
                             ? calculateGPA(enrollment.grade, enrollment.subjectDetails?.credit || 0).toFixed(2)
                             : "N/A"}
@@ -173,10 +210,11 @@ const StudentDashboard: React.FC = () => {
                     ))}
                   </tbody>
                 </table>
+
                 <div style={{ marginTop: "15px" }}>
                   <p>Total GPA: {totalGPA.toFixed(2)}</p>
                   <p>Total Credits: {totalCredits}</p>
-                  <p style={{ color: "blue", fontSize: "20px" }}>
+                  <p style={{ color: "#0A6BCCFF", fontSize: "18px", fontWeight: "500" }}>
                     Semester Final GPA: {semGPA.toFixed(2)}
                   </p>
                 </div>
@@ -201,6 +239,26 @@ const StudentDashboard: React.FC = () => {
                 return { year, semester, semGPA };
               });
               handleViewDetails(semesterGPAValues);
+            }}
+            style={{
+              backgroundColor: "#1c1c3c",
+              color: "white",
+              padding: "12px 25px",
+              fontSize: "16px",
+              border: "2px solid #1c1c3c",
+              borderRadius: "5px",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              marginTop: "20px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.transform = "scale(1)";
             }}
           >
             View All Semester GPA Details
