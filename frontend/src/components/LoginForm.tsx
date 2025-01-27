@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MdLockOutline } from 'react-icons/md';
 import { LuUserRound } from 'react-icons/lu';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -11,14 +11,6 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-
-  // Load remembered username and password
-  useEffect(() => {
-    const savedPassword = localStorage.getItem('rememberedPassword');
-    if (savedPassword) {
-      setPassword(savedPassword);
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,17 +31,10 @@ const LoginPage = () => {
         throw new Error(data.message || 'Login failed');
       }
 
-      setMessage('');
+      setMessage(data.message);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      if (rememberMe) {
-        localStorage.setItem('rememberedPassword', password);
-      } else {
-        localStorage.removeItem('rememberedPassword');
-      }
-
       const userRole = data.user.role;
-
       switch (userRole) {
         case 'administrator':
           window.location.href = '/subjectadd';
@@ -64,7 +49,7 @@ const LoginPage = () => {
           setMessage('Unknown user role');
       }
     } catch (error) {
-      setMessage('Invalid username or password');
+      setMessage(error.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -76,53 +61,48 @@ const LoginPage = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
-        width: 'auto',
-        height: 'auto',
-        background: 'linear-gradient(135deg, #142A55FF, #FFFFFFFF)' ,
-        color: '#fff',
+        background: 'linear-gradient(160deg, #00ACC1, #4DD0E1)',
         fontFamily: 'Arial, sans-serif',
+        minHeight: '100vh',
         padding: '20px',
         boxSizing: 'border-box',
       }}
     >
       <div
-    style={{
-    width: '100%',
-    maxWidth: '700px',
-    display: 'flex',
-    maxHeight: '1000px', // Increased height
-    flexWrap: 'wrap',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
-    backgroundColor: '#1c1c3c',
-  }}
->
+        style={{
+          width: '100%',
+          maxWidth: '1200px',
+          padding: '20px',
+          margin: '0 auto',
+          display: 'flex',
+          borderRadius: '10px',
+          overflow: 'hidden',
+          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
+          backgroundColor: '#80DEEA',
+        }}
+      >
         {/* Left Panel */}
         <div
           style={{
             flex: 1,
-            padding: '20px',
+            padding: '100px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            minWidth: '300px',
+            backgroundColor: '#E0F7FA',
+            borderRadius:'8px'
           }}
         >
           <div
             style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: '20px',
             }}
           >
-            <FaRegCircleUser style={{ width: '80px', height: '80px', color: '#fff' }} />
+            <FaRegCircleUser style={{ width: '80px', height: '80px', color: '#00ACC1' }} />
           </div>
           <form
             onSubmit={handleSubmit}
@@ -133,7 +113,7 @@ const LoginPage = () => {
               gap: '20px',
             }}
           >
-            {/* Username Field */}
+            {/* Username Field with Icon */}
             <div
               style={{
                 display: 'flex',
@@ -141,10 +121,10 @@ const LoginPage = () => {
                 gap: '10px',
                 padding: '12px',
                 borderRadius: '8px',
-                backgroundColor: '#2b2b4a',
+                backgroundColor: '#B2EBF2',
               }}
             >
-              <LuUserRound style={{ color: '#fff', fontSize: '20px' }} />
+              <LuUserRound style={{ color: '#00ACC1', fontSize: '20px' }} />
               <input
                 type="text"
                 placeholder="Username"
@@ -155,13 +135,13 @@ const LoginPage = () => {
                   border: 'none',
                   fontSize: '16px',
                   backgroundColor: 'transparent',
-                  color: '#fff',
+                  color: '#00ACC1',
                   outline: 'none',
                 }}
               />
             </div>
 
-            {/* Password Field */}
+            {/* Password Field with Icon */}
             <div
               style={{
                 display: 'flex',
@@ -169,10 +149,10 @@ const LoginPage = () => {
                 gap: '10px',
                 padding: '12px',
                 borderRadius: '8px',
-                backgroundColor: '#2b2b4a',
+                backgroundColor: '#B2EBF2',
               }}
             >
-              <MdLockOutline style={{ color: '#fff', fontSize: '20px' }} />
+              <MdLockOutline style={{ color: '#00ACC1', fontSize: '20px' }} />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
@@ -183,7 +163,7 @@ const LoginPage = () => {
                   border: 'none',
                   fontSize: '16px',
                   backgroundColor: 'transparent',
-                  color: '#fff',
+                  color: '#00ACC1',
                   outline: 'none',
                 }}
               />
@@ -192,9 +172,9 @@ const LoginPage = () => {
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
               >
                 {showPassword ? (
-                  <FaEye style={{ color: '#fff' }} />
+                  <FaEye style={{ color: '#00ACC1' }} />
                 ) : (
-                  <FaEyeSlash style={{ color: '#fff' }} />
+                  <FaEyeSlash style={{ color: '#00ACC1' }} />
                 )}
               </span>
             </div>
@@ -229,7 +209,7 @@ const LoginPage = () => {
                 border: 'none',
                 fontSize: '16px',
                 fontWeight: 'bold',
-                backgroundColor: '#4f84ff',
+                backgroundColor: '#00ACC1',
                 color: '#fff',
                 cursor: 'pointer',
               }}
@@ -238,38 +218,23 @@ const LoginPage = () => {
               {loading ? 'Signing in...' : 'Login'}
             </button>
           </form>
-
-          {/* Display error message */}
-          {message && (
-            <div
-              style={{
-                marginTop: '20px',
-                color: '#ff4c4c',
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              {message}
-            </div>
-          )}
         </div>
 
         {/* Right Panel */}
         <div
           style={{
             flex: 1,
-            padding: '20px',
-            background: 'url(https://via.placeholder.com/400)',
+            padding: '40px',
+            background: 'url(https://static.vecteezy.com/system/resources/previews/023/420/119/non_2x/cat-in-transparent-background-generative-ai-free-png.png)',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
             color: '#fff',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minWidth: '300px',
+            textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '40px', marginBottom: '20px', marginLeft: '80px' }}>Welcome</h1>
+          <h1 style={{ fontSize: '40px', marginBottom: '20px' }}>Welcome</h1>
         </div>
       </div>
     </div>
