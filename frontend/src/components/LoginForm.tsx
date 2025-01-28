@@ -3,6 +3,7 @@ import { MdLockOutline } from 'react-icons/md';
 import { LuUserRound } from 'react-icons/lu';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaRegCircleUser } from 'react-icons/fa6';
+import loginImage from '../assets/Loginpage.png'; // Update the path based on your file location
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -91,7 +92,7 @@ const LoginPage = () => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#E0F7FA',
-            borderRadius:'8px'
+            borderRadius: '8px',
           }}
         >
           <div
@@ -225,7 +226,7 @@ const LoginPage = () => {
           style={{
             flex: 1,
             padding: '40px',
-            background: 'url(https://static.vecteezy.com/system/resources/previews/023/420/119/non_2x/cat-in-transparent-background-generative-ai-free-png.png)',
+            backgroundImage: `url(${loginImage})`,
             backgroundSize: 'cover',
             color: '#fff',
             display: 'flex',
@@ -234,7 +235,7 @@ const LoginPage = () => {
             textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '40px', marginBottom: '20px' }}>Welcome</h1>
+          <h1 style={{ fontSize: '40px', marginBottom: '20px' ,color: '#33e18a' }}>Welcome</h1>
         </div>
       </div>
     </div>
