@@ -16,7 +16,29 @@ interface Subject {
   credit: number;
 }
 
+
+// In this section shows all the content. here is the place that calling the following sections.
+const PredictionPage: React.FC = () => {
+  const location = useLocation();
+
+  const semesterGPAValues: SemesterGPA[] = location.state?.semesterGPAValues || [];
+
+  if (semesterGPAValues.length === 0) {
+    return <p>No GPA details available. Please navigate from the dashboard to view details.</p>;
+  }
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Prediction Page</h1>
+        <CurrentGPATable semesterGPAValues={semesterGPAValues} />
+        <Prediction />
+    </div>
+  );
+};
+
+// here is the code that creating functionalities and interface.
 const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
+
   const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
 
   // Determine the next semester to fetch subjects for
@@ -146,7 +168,14 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
     }
 
     // Simplified required GPA calculation
-    const requiredGPA = nextClassThreshold;
+    const totalSemesters = useMemo(() => {
+      const uniqueSemesters = new Set(
+        semesterGPAValues.map((sem) => `${sem.year}-${sem.semester}`)
+      );
+      return uniqueSemesters.size;
+    }, [semesterGPAValues]); 
+
+    const requiredGPA = (nextClassThreshold * totalSemesters  ) - currentGPA ;
 
     return {
       currentClass,
@@ -156,7 +185,7 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
   };
 
   const degreeClassification = getDegreeClassification(currentGPA);
-  const { currentClass, nextClass, requiredGPA } = calculateGPAToNextClass(currentGPA);
+  const { nextClass, requiredGPA } = calculateGPAToNextClass(currentGPA);
 
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
@@ -250,21 +279,23 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
   );
 };
 
-const PredictionPage: React.FC = () => {
-  const location = useLocation();
 
-  const semesterGPAValues: SemesterGPA[] = location.state?.semesterGPAValues || [];
+// This section is used for the prediction to the next semester credits.
+const Prediction: React.FC = () =>{
 
-  if (semesterGPAValues.length === 0) {
-    return <p>No GPA details available. Please navigate from the dashboard to view details.</p>;
-  }
+
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Prediction Page</h1>
-      <CurrentGPATable semesterGPAValues={semesterGPAValues} />
-    </div>
+    <>
+      <div style={{paddingTop:'40px'}}> Anju BAba</div>
+      <div> Anju BAba</div>
+      <div> Anju BAba</div>
+      <div> Anju BAba</div>
+    </>
+
   );
-};
+}
+
+
 
 export default PredictionPage;
