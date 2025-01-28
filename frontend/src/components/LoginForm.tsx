@@ -235,7 +235,7 @@ const LoginPage = () => {
             textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '40px', marginBottom: '20px' ,color: '#33e18a' }}>Welcome</h1>
+          <h1 style={{ fontSize: '60px', marginBottom: '20px' ,color: '#00ACC1' }}>Welcome</h1>
         </div>
       </div>
     </div>
