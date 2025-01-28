@@ -16,6 +16,12 @@ const GPAdetails: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+
+  // Retrieve username from localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const username = user.username;
+  const indexNumber = user.indexNumber || "N/A"; // Assuming index number is stored in user
+
   // Retrieve semester GPA values passed via navigation state
   const semesterGPAValues: SemesterGPA[] = location.state?.semesterGPAValues || [];
 
@@ -75,8 +81,29 @@ const GPAdetails: React.FC = () => {
   };
 
   return (
+    <div style={{background: 'linear-gradient(135deg, #142A55FF, #FFFFFFFF)', }}>
     <div style={{ padding: "20px" }}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column'  }}>
+
+
+         {/* Navigation Bar */}
+      <div style={{
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        padding: "20px", 
+        backgroundColor: "#1e2a47", 
+        borderRadius: "10px", 
+        marginBottom: "20px", 
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+      }}>
+        <div style={{ color: "white", fontSize: "22px", fontWeight: "500" }}>
+          <span>Welcome, {username}</span> 
+        </div>
+        <div>
+          <img src={user?.image || "/default-avatar.png"} alt="User" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+        </div>
+      </div>
 
       <div style={{ 
           width: '100%', 
@@ -101,21 +128,31 @@ const GPAdetails: React.FC = () => {
         
         {/* Semester-wise Table */}
         <div style={{ width: '100%', marginBottom: '20px' }}>
-          <h2>Semester-wise GPA</h2>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              marginTop: "20px",
-            }}
-          >
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Semester GPA</th>
-              </tr>
-            </thead>
+
+        <div style={{
+                marginBottom: "40px", 
+                background: "#fff", 
+                padding: "25px", 
+                borderRadius: "10px", 
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}>
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Semester-wise GPA</h2>
+          <table style={{
+              width: "100%", 
+              borderCollapse: "collapse", 
+           
+              
+            }}>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid #ddd", padding: "12px",  }}>Year</th>
+                  <th style={{ border: "1px solid #ddd", padding: "12px",  }}>Semester</th>
+                  <th style={{ border: "1px solid #ddd", padding: "12px", }}>Semester GPA</th>
+                </tr>
+              </thead>
+
+
+
             <tbody>
               {semesterGPAValues.map((semester, index) => (
                 <tr key={index}>
@@ -136,7 +173,17 @@ const GPAdetails: React.FC = () => {
 
         {/* Year-wise Table */}
         <div style={{ width: '100%', marginBottom: '20px' }}>
-          <h2>Year-wise GPA</h2>
+
+        <div style={{
+                marginBottom: "40px", 
+                background: "#fff", 
+                padding: "25px", 
+                borderRadius: "10px", 
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}>
+
+
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Year-wise GPA</h2>
           <table
             style={{
               width: "100%",
@@ -164,10 +211,20 @@ const GPAdetails: React.FC = () => {
             </tbody>
           </table>
         </div>
+        </div>
 
         {/* Current GPA */}
         <div style={{ width: '100%', marginTop: '20px' }}>
-          <h2>Current GPA Calculation</h2>
+
+        <div style={{
+                marginBottom: "40px", 
+                background: "#fff", 
+                padding: "25px", 
+                borderRadius: "10px", 
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}>
+
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Current GPA Calculation</h2>
           <table
             style={{
               width: "100%",
@@ -202,10 +259,18 @@ const GPAdetails: React.FC = () => {
             </tbody>
           </table>
         </div>
+        </div>
 
         {/* Final GPA */}
         <div style={{ width: '100%', marginTop: '20px' }}>
-          <h2>Final GPA Calculation</h2>
+        <div style={{
+                marginBottom: "40px", 
+                background: "#fff", 
+                padding: "25px", 
+                borderRadius: "10px", 
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              }}>
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Final GPA Calculation</h2>
           <table
             style={{
               width: "100%",
@@ -252,7 +317,10 @@ const GPAdetails: React.FC = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        </div>
       </div>
+    </div>
     </div>
   );
 };
