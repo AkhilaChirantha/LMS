@@ -91,11 +91,12 @@ const GPAdetails: React.FC = () => {
         display: "flex", 
         justifyContent: "space-between", 
         alignItems: "center", 
-        padding: "20px", 
+        padding: "30px", 
         backgroundColor: '#E0F7FA', 
         borderRadius: "10px", 
+        marginTop:"10px",
         marginBottom: "20px", 
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+        boxShadow: "0 4px 6px rgba(181, 34, 34, 0.1)"
       }}>
         <div style={{ color: "black", fontSize: "22px", fontWeight: "500" }}>
           <span>Welcome, {username}</span> 
