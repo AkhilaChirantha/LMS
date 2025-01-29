@@ -82,7 +82,7 @@ const GPAdetails: React.FC = () => {
   };
   
   return (
-    <div style={{background: '#84B6BDFF', }}>
+    <div style={{background: 'linear-gradient(135deg,rgb(93, 195, 192),rgb(255, 255, 255))', }}>
     <div style={{ padding: "20px" }}>
       <div style={{ display: 'flex', flexDirection: 'column'  }}>
 
@@ -103,7 +103,7 @@ const GPAdetails: React.FC = () => {
           <span>WELCOME! {username}</span> 
         </div>
         <div>
-        <img src={user?.image || userImage} alt="User" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+        <img src={user?.image || userImage} alt="User" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
         </div>
       </div>
 
@@ -114,18 +114,27 @@ const GPAdetails: React.FC = () => {
           marginBottom: '20px' 
         }}>
           <button 
-            onClick={handleNavigateToPrediction}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer'
-            }}
-          >
-            Go to Prediction Page
-          </button>
+        onClick={handleNavigateToPrediction}
+        style={{
+          padding: '12px 24px',
+          backgroundColor: 'darkcyan',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          transition: 'background-color 0.3s ease, transform 0.2s ease',
+          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)'
+        }}
+  onMouseOver={(e) => e.target.style.backgroundColor = '#1e2a47'}
+  onMouseOut={(e) => e.target.style.backgroundColor = 'darkcyan'}
+  onMouseDown={(e) => e.target.style.transform = 'scale(0.96)'}
+  onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
+>
+  Prediction Page
+</button>
+
         </div>
         
         {/* Semester-wise Table */}
