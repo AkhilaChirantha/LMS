@@ -92,10 +92,16 @@ const LecturerDashboard: React.FC = () => {
   });
 
   return (
-    <div style={{ backgroundColor: "#00ACC1", minHeight: "100vh", padding: "20px" }}>
+    <div
+  style={{
+    backgroundImage: 'linear-gradient(90deg,rgb(37, 85, 217),rgb(32, 151, 225))',
+    minHeight: "100vh",
+    padding: "20px",
+  }}
+>
       <div
         style={{
-          backgroundColor: "#000000",
+          backgroundColor: " #303030",
           color: "white",
           textAlign: "center",
           padding: "15px",
@@ -119,12 +125,12 @@ const LecturerDashboard: React.FC = () => {
                 style={{
                   width: "100%",
                   borderCollapse: "collapse",
-                  backgroundColor: "#B2BEB5",
+                  backgroundColor: "#ededf1",
                   borderRadius: "10px",
                 }}
               >
                 <thead>
-                  <tr style={{ backgroundColor: "#555", color: "white" }}>
+                  <tr style={{ backgroundColor: "#aaacaa", color: "white" }}>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Add Grades</th>

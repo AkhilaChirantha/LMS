@@ -64,57 +64,86 @@ const AddGradesForm: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc' }}>
-      <h2>Manage Grades for {subjectId}</h2>
-      <h3>Enrolled Students</h3>
-      {enrollments.length > 0 ? (
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-          <thead>
-            <tr>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Username</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Grade</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Fix Grade</th>
-            </tr>
-          </thead>
-          <tbody>
-            {enrollments.map((enrollment, index) => (
-              <tr key={index}>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{enrollment.username}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  <select
-                    value={enrollment.grade}
-                    onChange={(e) => handleGradeChange(index, e.target.value)}
-                    disabled={enrollment.isFixed}
-                    style={{ width: '100%' }}
-                  >
-                    <option value="A+">A+</option>
-                    <option value="A">A</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B">B</option>
-                    <option value="B-">B-</option>
-                    <option value="C+">C+</option>
-                    <option value="C">C</option>
-                    <option value="D+">D+</option>
-                    <option value="D">D</option>
-                    <option value="D-">D-</option>
-                    <option value="E">E</option>
-                  </select>
-                </td>
-                <td style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'center' }}>
-                  <input
-                    type="checkbox"
-                    checked={enrollment.isFixed}
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                </td>
+    <div style={{ 
+      backgroundColor: '#3eb9e4', 
+      minHeight: '100vh', 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        backgroundColor: 'rgba(229, 227, 227, 0.44)',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(28, 27, 27, 0.1)',
+        maxWidth: '800px',
+        width: '100%',
+        textAlign: 'center'
+      }}>
+        <h2 style={{ marginBottom: '10px', color: '#333' }}>Manage Grades for {subjectId}</h2>
+        <h3 style={{ color: '#666' }}>Enrolled Students</h3>
+        {enrollments.length > 0 ? (
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse', 
+            marginTop: '20px',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            overflow: 'hidden'
+          }}>
+            <thead style={{ backgroundColor: '#aaacaa', color: 'white' }}>
+              <tr>
+                <th style={{ padding: '10px', textAlign: 'left' }}>Username</th>
+                <th style={{ padding: '10px', textAlign: 'left' }}>Grade</th>
+                <th style={{ padding: '10px', textAlign: 'center' }}>Fix Grade</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No enrollments found.</p>
-      )}
+            </thead>
+            <tbody>
+              {enrollments.map((enrollment, index) => (
+                <tr key={index} style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9'}}>
+                  <td style={{ padding: '10px' }}>{enrollment.username}</td>
+                  <td style={{ padding: '10px' }}>
+                    <select
+                      value={enrollment.grade}
+                      onChange={(e) => handleGradeChange(index, e.target.value)}
+                      disabled={enrollment.isFixed}
+                      style={{
+                        width: '100%',
+                        padding: '5px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc'
+                      }}
+                    >
+                      <option value="A+">A+</option>
+                      <option value="A">A</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B">B</option>
+                      <option value="B-">B-</option>
+                      <option value="C+">C+</option>
+                      <option value="C">C</option>
+                      <option value="D+">D+</option>
+                      <option value="D">D</option>
+                      <option value="D-">D-</option>
+                      <option value="E">E</option>
+                    </select>
+                  </td>
+                  <td style={{ padding: '10px', textAlign: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={enrollment.isFixed}
+                      onChange={() => handleCheckboxChange(index)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p style={{ color: '#777' }}>No enrollments found.</p>
+        )}
+      </div>
     </div>
   );
 };
