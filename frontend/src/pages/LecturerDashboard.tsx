@@ -92,25 +92,42 @@ const LecturerDashboard: React.FC = () => {
   });
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Welcome, {username}</h1>
-      <h2>Your Enrolled Subjects</h2>
+    <div style={{ backgroundColor: "#00ACC1", minHeight: "100vh", padding: "20px" }}>
+      <div
+        style={{
+          backgroundColor: "#000000",
+          color: "white",
+          textAlign: "center",
+          padding: "15px",
+          fontSize: "24px",
+          fontWeight: "bold",
+          borderRadius: "15px",
+          margin: "20px auto",
+          width: "60%",
+        }}
+      >
+        Welcome, {username}
+      </div>
+      <h2 style={{ textAlign: "center" }}>Your Enrolled Subjects</h2>
       {sortedGroups.length === 0 ? (
-        <p>No enrolled subjects found.</p>
+        <p style={{ textAlign: "center" }}>No enrolled subjects found.</p>
       ) : (
         sortedGroups.map(([key, enrollmentGroup]) => {
-          
-
           return (
             <div key={key} style={{ marginBottom: "40px" }}>
-
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  backgroundColor: "#B2BEB5",
+                  borderRadius: "10px",
+                }}
+              >
                 <thead>
-                  <tr>
+                  <tr style={{ backgroundColor: "#555", color: "white" }}>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
                     <th style={{ border: "1px solid black", padding: "10px" }}>Add Grades</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -122,8 +139,31 @@ const LecturerDashboard: React.FC = () => {
                       <td style={{ border: "1px solid black", padding: "10px" }}>
                         {enrollment.subjectDetails?.subjectName || "N/A"}
                       </td>
-                      <td style={{ border: "1px solid black", padding: "10px",textAlign:'center'  }}>
-                        <button type="button" onClick={() => navigate('/addgrades', { state: { subjectId: enrollment.subjectDetails?.subjectId } })}>Go</button>
+                      <td
+                        style={{
+                          border: "1px solid black",
+                          padding: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() =>
+                            navigate("/addgrades", {
+                              state: { subjectId: enrollment.subjectDetails?.subjectId },
+                            })
+                          }
+                          style={{
+                            backgroundColor: "#23dc26",
+                            color: "white",
+                            border: "none",
+                            padding: "8px 15px",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Go
+                        </button>
                       </td>
                     </tr>
                   ))}

@@ -12,6 +12,7 @@ import EnrollLecturer from './pages/EnrollLecturer';
 import LecturerDashboard from './pages/LecturerDashboard';
 import GPAdetails from './pages/GPADetails';
 import PredictionPage from './pages/Prediction';
+import RemoveSubject from './pages/RemoveSubject';
 
 
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
       <Route path="/lecdashboard" element={<LecturerDashboard/>} />
       <Route path="/gpadetails" element={<GPAdetails/>} />
       <Route path="/prediction" element={<PredictionPage/>} />
+      <Route path="/removesubject" element={<RemoveSubject/>} />
    
     </Routes>
   );
