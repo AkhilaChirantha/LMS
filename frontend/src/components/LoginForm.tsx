@@ -3,7 +3,7 @@ import { MdLockOutline } from 'react-icons/md';
 import { LuUserRound } from 'react-icons/lu';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaRegCircleUser } from 'react-icons/fa6';
-
+import loginImage from '../assets/Loginpage.png'; // Update the path based on your file location
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -62,12 +62,9 @@ const LoginPage = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
-        width: 'auto',
-        height: 'auto',
-        background: 'linear-gradient(135deg, #3F62A5FF, #9822B6FF)',
-        color: '#fff',
+        background: 'linear-gradient(160deg, #00ACC1, #4DD0E1)',
         fontFamily: 'Arial, sans-serif',
+        minHeight: '100vh',
         padding: '20px',
         boxSizing: 'border-box',
       }}
@@ -75,39 +72,38 @@ const LoginPage = () => {
       <div
         style={{
           width: '100%',
-          maxWidth: '700px',
+          maxWidth: '1200px',
+          padding: '20px',
+          margin: '0 auto',
           display: 'flex',
-          flexWrap: 'wrap',
-          borderRadius: '12px',
+          borderRadius: '10px',
           overflow: 'hidden',
           boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
-          backgroundColor: '#1c1c3c',
+          backgroundColor: '#80DEEA',
         }}
       >
         {/* Left Panel */}
         <div
           style={{
             flex: 1,
-            padding: '20px',
+            padding: '100px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            minWidth: '300px',
+            backgroundColor: '#E0F7FA',
+            borderRadius: '8px',
           }}
         >
           <div
             style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: '20px',
             }}
           >
-            <FaRegCircleUser style={{ width: '80px', height: '80px', color: '#fff' }} />
+            <FaRegCircleUser style={{ width: '80px', height: '80px', color: '#00ACC1' }} />
           </div>
           <form
             onSubmit={handleSubmit}
@@ -126,10 +122,10 @@ const LoginPage = () => {
                 gap: '10px',
                 padding: '12px',
                 borderRadius: '8px',
-                backgroundColor: '#2b2b4a',
+                backgroundColor: '#B2EBF2',
               }}
             >
-              <LuUserRound style={{ color: '#fff', fontSize: '20px' }} />
+              <LuUserRound style={{ color: '#00ACC1', fontSize: '20px' }} />
               <input
                 type="text"
                 placeholder="Username"
@@ -140,7 +136,7 @@ const LoginPage = () => {
                   border: 'none',
                   fontSize: '16px',
                   backgroundColor: 'transparent',
-                  color: '#fff',
+                  color: '#00ACC1',
                   outline: 'none',
                 }}
               />
@@ -154,10 +150,10 @@ const LoginPage = () => {
                 gap: '10px',
                 padding: '12px',
                 borderRadius: '8px',
-                backgroundColor: '#2b2b4a',
+                backgroundColor: '#B2EBF2',
               }}
             >
-              <MdLockOutline style={{ color: '#fff', fontSize: '20px' }} />
+              <MdLockOutline style={{ color: '#00ACC1', fontSize: '20px' }} />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
@@ -168,7 +164,7 @@ const LoginPage = () => {
                   border: 'none',
                   fontSize: '16px',
                   backgroundColor: 'transparent',
-                  color: '#fff',
+                  color: '#00ACC1',
                   outline: 'none',
                 }}
               />
@@ -177,9 +173,9 @@ const LoginPage = () => {
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
               >
                 {showPassword ? (
-                  <FaEye style={{ color: '#fff' }} />
+                  <FaEye style={{ color: '#00ACC1' }} />
                 ) : (
-                  <FaEyeSlash style={{ color: '#fff' }} />
+                  <FaEyeSlash style={{ color: '#00ACC1' }} />
                 )}
               </span>
             </div>
@@ -214,7 +210,7 @@ const LoginPage = () => {
                 border: 'none',
                 fontSize: '16px',
                 fontWeight: 'bold',
-                backgroundColor: '#4f84ff',
+                backgroundColor: '#00ACC1',
                 color: '#fff',
                 cursor: 'pointer',
               }}
@@ -222,7 +218,6 @@ const LoginPage = () => {
             >
               {loading ? 'Signing in...' : 'Login'}
             </button>
-           
           </form>
         </div>
 
@@ -230,19 +225,17 @@ const LoginPage = () => {
         <div
           style={{
             flex: 1,
-            padding: '20px',
-            background: 'url(https://via.placeholder.com/400)',
+            padding: '40px',
+            backgroundImage: `url(${loginImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
             color: '#fff',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minWidth: '300px',
+            textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '40px', marginBottom: '20px', marginLeft:"80px" }}>Welcome</h1>
-          
+          <h1 style={{ fontSize: '60px', marginBottom: '20px' ,color: '#00ACC1' }}>Welcome</h1>
         </div>
       </div>
     </div>
