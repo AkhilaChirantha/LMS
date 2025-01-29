@@ -179,11 +179,11 @@ const StudentDashboard: React.FC = () => {
                 }}>
                   <thead>
   <tr>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Subject ID</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Subject Name</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Credits</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Grade</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>GPA Value</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject ID</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject Name</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Credits</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Grade</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>GPA Value</th>
   </tr>
 </thead>
 <tbody>
