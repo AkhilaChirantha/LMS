@@ -118,7 +118,7 @@ const StudentDashboard: React.FC = () => {
   return (
     <div style={{
       padding: "20px", 
-      background: 'linear-gradient(135deg,rgb(8, 104, 91), #FFFFFFFF)' ,
+      background: 'linear-gradient(135deg,rgb(96, 161, 158), #FFFFFFFF)' ,
       minHeight: "100vh",
       
     }}>
@@ -128,13 +128,13 @@ const StudentDashboard: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "20px", 
-        backgroundColor: "#BBC6E0FF", 
+        backgroundColor: "#E0F7FA", 
         borderRadius: "10px", 
         marginBottom: "20px", 
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
       }}>
-        <div style={{ color: "white", fontSize: "22px", fontWeight: "500" }}>
-          <span>Welcome, {username}</span> 
+        <div style={{ color: "Black", fontSize: "35px", fontWeight: "500" }}>
+          <span>WELCOME! {username}</span> 
         </div>
         <div>
           <img src={user?.image || "image.png"} alt="" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
