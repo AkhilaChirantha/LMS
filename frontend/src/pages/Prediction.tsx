@@ -268,24 +268,28 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
       <div style={{ marginTop: "20px" }}>
         <h3>Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})</h3>
         {nextSemesterSubjects.length > 0 ? (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <table style={{ 
+            width: "100%", 
+            borderCollapse: "collapse" 
+          }}>
             <thead>
               <tr>
-                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Subject ID</th>
-                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Subject Name</th>
-                <th style={{ border: "1px solid #ddd", padding: "10px" }}>Credits</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Subject ID</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Subject Name</th>
+                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Credits</th>
               </tr>
             </thead>
             <tbody>
               {nextSemesterSubjects.map((subject) => (
                 <tr key={subject.subjectId}>
-                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{subject.subjectId}</td>
-                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{subject.subjectName}</td>
-                  <td style={{ border: "1px solid #ddd", padding: "10px" }}>{subject.credit}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
+                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          
         ) : (
           <p>No subjects found for the next semester.</p>
         )}
