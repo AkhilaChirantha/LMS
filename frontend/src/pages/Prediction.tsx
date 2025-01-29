@@ -243,16 +243,26 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
           </tr>
         </tbody>
       </table>
-      <div style={{ marginTop: "20px" }}>
-        <p><strong>Degree Classification:</strong> <strong style={{color:'gold', fontSize:'20px'}}>{degreeClassification}</strong> </p>
-        {nextClass && requiredGPA !== null ? (
-          <p>
-            To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
-          </p>
-        ) : (
-          <p>You are already at the highest degree classification.</p>
-        )}
-      </div>
+      <div style={{
+  background: "#1e3a5f", // Dark blue background
+  padding: "20px",
+  borderRadius: "10px",
+  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", // Soft shadow
+  color: "#fff", // White text color
+  fontSize: "18px",
+  marginTop: "20px",
+  textAlign: "center"
+}}>
+  <p><strong>Degree Classification:</strong> <span style={{ color: 'gold', fontSize: '20px' }}>{degreeClassification}</span></p>
+  {nextClass && requiredGPA !== null ? (
+    <p>
+      To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
+    </p>
+  ) : (
+    <p>You are already at the highest degree classification.</p>
+  )}
+</div>
+
 
       {/* Next Semester Subjects Section */}
       <div style={{ marginTop: "20px" }}>
