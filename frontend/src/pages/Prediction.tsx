@@ -196,53 +196,54 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
     <div style={{ width: "100%", marginTop: "20px" }}>
       <h2>Semester-Wise GPA Calculation</h2>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Year</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Semester</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Semester GPA</th>
-            <th style={{ border: "1px solid #ddd", padding: "10px" }}>Year GPA</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(yearWiseData).flatMap(([year, data]) => 
-            data.semesters.map((sem, index) => (
-              <tr key={`${year}-${sem.semester}`}>
-                {index === 0 && (
-                  <td 
-                    style={{ border: "1px solid #ddd", padding: "10px" }} 
-                    rowSpan={data.semesters.length}
-                  >
-                    {year}
-                  </td>
-                )}
-                <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                  {sem.semester}
-                </td>
-                <td style={{ border: "1px solid #ddd", padding: "10px" }}>
-                  {sem.semGPA.toFixed(2)}
-                </td>
-                {index === 0 && (
-                  <td 
-                    style={{ border: "1px solid #ddd", padding: "10px" }} 
-                    rowSpan={data.semesters.length}
-                  >
-                    {data.yearGPA.toFixed(2)}
-                  </td>
-                )}
-              </tr>
-            ))
+  <thead>
+    <tr>
+      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Year</th>
+      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Semester</th>
+      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Semester GPA</th>
+      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Year GPA</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.entries(yearWiseData).flatMap(([year, data]) => 
+      data.semesters.map((sem, index) => (
+        <tr key={`${year}-${sem.semester}`}>
+          {index === 0 && (
+            <td 
+              style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }} 
+              rowSpan={data.semesters.length}
+            >
+              {year}
+            </td>
           )}
-          <tr>
-            <td colSpan={3} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold" }}>
-              Cumulative GPA
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
+            {sem.semester}
+          </td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
+            {sem.semGPA.toFixed(2)}
+          </td>
+          {index === 0 && (
+            <td 
+              style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }} 
+              rowSpan={data.semesters.length}
+            >
+              {data.yearGPA.toFixed(2)}
             </td>
-            <td colSpan={1} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold" }}>
-              {currentGPA.toFixed(2)}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          )}
+        </tr>
+      ))
+    )}
+    <tr>
+      <td colSpan={3} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+        Cumulative GPA
+      </td>
+      <td colSpan={1} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+        {currentGPA.toFixed(2)}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
       <div style={{
   background: "Darkcyan", // Dark blue background
   padding: "20px",
