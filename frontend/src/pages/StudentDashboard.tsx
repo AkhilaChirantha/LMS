@@ -179,29 +179,29 @@ const StudentDashboard: React.FC = () => {
                 }}>
                   <thead>
   <tr>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject ID</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject Name</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Credits</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Grade</th>
-    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>GPA Value</th>
+    <th style={{ border: "2px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject ID</th>
+    <th style={{ border: "2px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Subject Name</th>
+    <th style={{ border: "2px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Credits</th>
+    <th style={{ border: "2px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>Grade</th>
+    <th style={{ border: "2px solid #ddd", padding: "12px", backgroundColor: "powderblue", textAlign: "center" }}>GPA Value</th>
   </tr>
 </thead>
 <tbody>
   {enrollmentGroup.map((enrollment, index) => (
     <tr key={index}>
-      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+      <td style={{ border: "2px solid #ddd", padding: "12px", textAlign: "center" }}>
         {enrollment.subjectDetails?.subjectId || "N/A"}
       </td>
-      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+      <td style={{ border: "2px solid #ddd", padding: "12px", textAlign: "center" }}>
         {enrollment.subjectDetails?.subjectName || "N/A"}
       </td>
-      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+      <td style={{ border: "2px solid #ddd", padding: "12px", textAlign: "center" }}>
         {enrollment.subjectDetails?.credit || "N/A"}
       </td>
-      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+      <td style={{ border: "2px solid #ddd", padding: "12px", textAlign: "center" }}>
         {enrollment.grade || "N/A"}
       </td>
-      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+      <td style={{ border: "2px solid #ddd", padding: "12px", textAlign: "center" }}>
         {enrollment.grade
           ? calculateGPA(enrollment.grade, enrollment.subjectDetails?.credit || 0).toFixed(2)
           : "N/A"}
