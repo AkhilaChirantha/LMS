@@ -118,7 +118,7 @@ const StudentDashboard: React.FC = () => {
   return (
     <div style={{
       padding: "20px", 
-      background: 'linear-gradient(135deg, #556B97FF, #FFFFFFFF)' ,
+      background: 'linear-gradient(135deg,rgb(8, 104, 91), #FFFFFFFF)' ,
       minHeight: "100vh",
       
     }}>
@@ -178,37 +178,38 @@ const StudentDashboard: React.FC = () => {
                   boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)"
                 }}>
                   <thead>
-                    <tr>
-                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Subject ID</th>
-                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Subject Name</th>
-                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Credits</th>
-                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>Grade</th>
-                      <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6" }}>GPA Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {enrollmentGroup.map((enrollment, index) => (
-                      <tr key={index}>
-                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
-                          {enrollment.subjectDetails?.subjectId || "N/A"}
-                        </td>
-                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
-                          {enrollment.subjectDetails?.subjectName || "N/A"}
-                        </td>
-                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
-                          {enrollment.subjectDetails?.credit || "N/A"}
-                        </td>
-                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
-                          {enrollment.grade || "N/A"}
-                        </td>
-                        <td style={{ border: "1px solid #ddd", padding: "12px" }}>
-                          {enrollment.grade
-                            ? calculateGPA(enrollment.grade, enrollment.subjectDetails?.credit || 0).toFixed(2)
-                            : "N/A"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+  <tr>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Subject ID</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Subject Name</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Credits</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>Grade</th>
+    <th style={{ border: "1px solid #ddd", padding: "12px", backgroundColor: "#e6e6e6", textAlign: "center" }}>GPA Value</th>
+  </tr>
+</thead>
+<tbody>
+  {enrollmentGroup.map((enrollment, index) => (
+    <tr key={index}>
+      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+        {enrollment.subjectDetails?.subjectId || "N/A"}
+      </td>
+      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+        {enrollment.subjectDetails?.subjectName || "N/A"}
+      </td>
+      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+        {enrollment.subjectDetails?.credit || "N/A"}
+      </td>
+      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+        {enrollment.grade || "N/A"}
+      </td>
+      <td style={{ border: "1px solid #ddd", padding: "12px", textAlign: "center" }}>
+        {enrollment.grade
+          ? calculateGPA(enrollment.grade, enrollment.subjectDetails?.credit || 0).toFixed(2)
+          : "N/A"}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                 </table>
 
                 <div style={{ marginTop: "15px" }}>
