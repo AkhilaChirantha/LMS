@@ -174,7 +174,7 @@ const StudentDashboard: React.FC = () => {
                   width: "100%", 
                   borderCollapse: "collapse", 
                   backgroundColor: "#f9f9f9", 
-                  borderRadius: "8px", 
+                  borderRadius: "12px", 
                   boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)"
                 }}>
                   <thead>
