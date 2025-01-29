@@ -30,7 +30,7 @@ const PredictionPage: React.FC = () => {
   return (
     <div style={{ padding: "20px",
       minHeight: "100vh",
-      background: "linear-gradient(135deg,rgb(241, 246, 248),rgb(235, 242, 243))", // Cyan Gradient
+      background: "linear-gradient(135deg,rgb(198, 224, 233),rgb(235, 242, 243))", // Cyan Gradient
       color: "black" // Ensures text is readable
 
      }}>
