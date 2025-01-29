@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import userImage from "../assets/user.png";
 
 interface SemesterGPA {
   semGPA: number;
@@ -79,7 +80,7 @@ const GPAdetails: React.FC = () => {
       } 
     });
   };
-
+  
   return (
     <div style={{background: '#84B6BDFF', }}>
     <div style={{ padding: "20px" }}>
@@ -98,11 +99,11 @@ const GPAdetails: React.FC = () => {
         marginBottom: "20px", 
         boxShadow: "0 4px 6px rgba(181, 34, 34, 0.1)"
       }}>
-        <div style={{ color: "black", fontSize: "22px", fontWeight: "500" }}>
-          <span>Welcome, {username}</span> 
+        <div style={{ color: "black", fontSize: "35px", fontWeight: "500" }}>
+          <span>WELCOME! {username}</span> 
         </div>
         <div>
-          <img src={user?.image || "/default-avatar.png"} alt="User" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+        <img src={user?.image || userImage} alt="User" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
         </div>
       </div>
 
