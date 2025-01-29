@@ -215,7 +215,7 @@ const StudentDashboard: React.FC = () => {
                 <div style={{ marginTop: "15px" }}>
                   <p>Total GPA: {totalGPA.toFixed(2)}</p>
                   <p>Total Credits: {totalCredits}</p>
-                  <p style={{ color: "#0A6BCCFF", fontSize: "18px", fontWeight: "500" }}>
+                  <p style={{ color: "red", fontSize: "18px", fontWeight: "500" }}>
                     Semester Final GPA: {semGPA.toFixed(2)}
                   </p>
                 </div>
