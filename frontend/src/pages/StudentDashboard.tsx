@@ -251,7 +251,7 @@ const StudentDashboard: React.FC = () => {
               cursor: "pointer",
               transition: "all 0.3s ease",
               marginTop: "20px",
-              boxShadow: "0 4px 6px rgba(7, 13, 94, 0.1)",
+              boxShadow: "0 4px 6px hsla(210, 2.60%, 54.90%, 0.10)",
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.backgroundColor = "onClick";
