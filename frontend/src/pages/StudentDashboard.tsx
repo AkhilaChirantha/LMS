@@ -242,7 +242,7 @@ const StudentDashboard: React.FC = () => {
               handleViewDetails(semesterGPAValues);
             }}
             style={{
-              backgroundColor: "#1c1c3c",
+              backgroundColor: "darkcyan",
               color: "white",
               padding: "12px 25px",
               fontSize: "16px",
@@ -251,14 +251,14 @@ const StudentDashboard: React.FC = () => {
               cursor: "pointer",
               transition: "all 0.3s ease",
               marginTop: "20px",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              boxShadow: "0 4px 6px rgba(7, 13, 94, 0.1)",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.backgroundColor = "onClick";
               e.currentTarget.style.transform = "scale(1.05)";
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.backgroundColor = "onClick";
               e.currentTarget.style.transform = "scale(1)";
             }}
           >
