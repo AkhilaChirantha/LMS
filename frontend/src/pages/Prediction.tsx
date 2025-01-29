@@ -195,54 +195,64 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <h2>Semester-Wise GPA Calculation</h2>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-  <thead>
-    <tr>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester GPA</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year GPA</th>
-    </tr>
-  </thead>
-  <tbody>
-    {Object.entries(yearWiseData).flatMap(([year, data]) => 
-      data.semesters.map((sem, index) => (
-        <tr key={`${year}-${sem.semester}`}>
-          {index === 0 && (
-            <td 
-              style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
-              rowSpan={data.semesters.length}
-            >
-              {year}
+      <div style={{
+  backgroundColor: "white",
+  padding: "20px",
+  borderRadius: "10px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  width: "100%",
+  overflowX: "auto"
+}}>
+  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <thead>
+      <tr>
+        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year</th>
+        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester</th>
+        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester GPA</th>
+        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year GPA</th>
+      </tr>
+    </thead>
+    <tbody>
+      {Object.entries(yearWiseData).flatMap(([year, data]) => 
+        data.semesters.map((sem, index) => (
+          <tr key={`${year}-${sem.semester}`}>
+            {index === 0 && (
+              <td 
+                style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
+                rowSpan={data.semesters.length}
+              >
+                {year}
+              </td>
+            )}
+            <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
+              {sem.semester}
             </td>
-          )}
-          <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
-            {sem.semester}
-          </td>
-          <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
-            {sem.semGPA.toFixed(2)}
-          </td>
-          {index === 0 && (
-            <td 
-              style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
-              rowSpan={data.semesters.length}
-            >
-              {data.yearGPA.toFixed(2)}
+            <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
+              {sem.semGPA.toFixed(2)}
             </td>
-          )}
-        </tr>
-      ))
-    )}
-    <tr>
-      <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
-        Cumulative GPA
-      </td>
-      <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
-        {currentGPA.toFixed(2)}
-      </td>
-    </tr>
-  </tbody>
-</table>
+            {index === 0 && (
+              <td 
+                style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
+                rowSpan={data.semesters.length}
+              >
+                {data.yearGPA.toFixed(2)}
+              </td>
+            )}
+          </tr>
+        ))
+      )}
+      <tr>
+        <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+          Cumulative GPA
+        </td>
+        <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+          {currentGPA.toFixed(2)}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
       <div style={{
   background: "Darkcyan", // Dark blue background
@@ -269,27 +279,34 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
       <div style={{ marginTop: "20px" }}>
         <h3>Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})</h3>
         {nextSemesterSubjects.length > 0 ? (
-          <table style={{ 
-            width: "100%", 
-            borderCollapse: "collapse" 
+          <div style={{
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            width: "100%",
+            overflowX: "auto"
           }}>
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject ID</th>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject Name</th>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Credits</th>
-              </tr>
-            </thead>
-            <tbody>
-              {nextSemesterSubjects.map((subject) => (
-                <tr key={subject.subjectId}>
-                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
-                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
-                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject ID</th>
+                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject Name</th>
+                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Credits</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {nextSemesterSubjects.map((subject) => (
+                  <tr key={subject.subjectId}>
+                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
+                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
+                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
           
         ) : (
           <p>No subjects found for the next semester.</p>
