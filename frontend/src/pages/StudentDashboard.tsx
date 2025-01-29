@@ -118,7 +118,7 @@ const StudentDashboard: React.FC = () => {
   return (
     <div style={{
       padding: "20px", 
-      background: 'linear-gradient(135deg, #556B97FF, #FFFFFFFF)' ,
+      backgroundColor: '#80DEEA',
       minHeight: "100vh",
       
     }}>
@@ -128,12 +128,12 @@ const StudentDashboard: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "20px", 
-        backgroundColor: "#BBC6E0FF", 
+        backgroundColor: '#E0F7FA', 
         borderRadius: "10px", 
         marginBottom: "20px", 
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
       }}>
-        <div style={{ color: "white", fontSize: "22px", fontWeight: "500" }}>
+        <div style={{ color: "black", fontSize: "22px", fontWeight: "500" }}>
           <span>Welcome, {username}</span> 
         </div>
         <div>
@@ -241,11 +241,11 @@ const StudentDashboard: React.FC = () => {
               handleViewDetails(semesterGPAValues);
             }}
             style={{
-              backgroundColor: "#1c1c3c",
+              backgroundColor: "#00ACC1",
               color: "white",
               padding: "12px 25px",
               fontSize: "16px",
-              border: "2px solid #1c1c3c",
+              border: "2px solid #00ACC1",
               borderRadius: "5px",
               cursor: "pointer",
               transition: "all 0.3s ease",
@@ -253,11 +253,11 @@ const StudentDashboard: React.FC = () => {
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.backgroundColor = "#00ACC1";
               e.currentTarget.style.transform = "scale(1.05)";
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#1c1c3c";
+              e.currentTarget.style.backgroundColor = "#00ACC1";
               e.currentTarget.style.transform = "scale(1)";
             }}
           >

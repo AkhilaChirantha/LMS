@@ -14,23 +14,12 @@ const HeroPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 'auto',
-        background: 'linear-gradient(135deg, #142A55FF, #FFFFFFFF)' ,
+        backgroundColor: '#80DEEA',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: '-50px',
-          left: '-100px',
-          width: '500px',
-          height: '500px',
-          backgroundColor: '#E3F2FD',
-          borderRadius: '80%',
-          zIndex: '-1',
-        }}
-      ></div>
+      
       <div style={{ maxWidth: '500px', marginRight: '50px' }}>
         <h1 style={{ fontSize: '50px', fontWeight: 'bold', color: '#1E1E1E' }}>
           <span style={{ color: '#F4B400' }}>Track</span> Your Academic Journey
@@ -39,7 +28,7 @@ const HeroPage = () => {
         <p
           style={{
             fontSize: '20px',
-            color: '#FFFFFF',
+            color: 'black',
             lineHeight: '1.8',
           }}
         >
