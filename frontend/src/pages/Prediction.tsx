@@ -244,7 +244,7 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
         </tbody>
       </table>
       <div style={{ marginTop: "20px" }}>
-        <p><strong>Degree Classification:</strong> <strong style={{color:'red', fontSize:'20px'}}>{degreeClassification}</strong> </p>
+        <p><strong>Degree Classification:</strong> <strong style={{color:'gold', fontSize:'20px'}}>{degreeClassification}</strong> </p>
         {nextClass && requiredGPA !== null ? (
           <p>
             To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
