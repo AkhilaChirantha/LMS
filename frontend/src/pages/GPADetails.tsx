@@ -159,17 +159,21 @@ const GPAdetails: React.FC = () => {
     width: "100%", 
     borderCollapse: "collapse", 
     boxSizing: "border-box",
-  }}>
+    borderRadius: "5px",
+    overflow: "hidden"
+}}>
+
     <thead>
       <tr style={{
-        backgroundColor: "#f4f4f4", 
-        color: "#333", 
+        backgroundColor: "cadetblue", 
+        color: "#fff", 
         fontWeight: "bold"
       }}>
         <th style={{
           border: "1px solid #ddd", 
           padding: "12px", 
-          textAlign: "left"
+        textAlign: "center"
+          
         }}>
           Year
         </th>
