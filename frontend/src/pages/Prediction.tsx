@@ -30,8 +30,8 @@ const PredictionPage: React.FC = () => {
   return (
     <div style={{ padding: "20px",
       minHeight: "100vh",
-      background: "linear-gradient(135deg,rgb(6, 10, 11),rgb(44, 71, 72))", // Cyan Gradient
-      color: "#fff" // Ensures text is readable
+      background: "linear-gradient(135deg,rgb(241, 246, 248),rgb(235, 242, 243))", // Cyan Gradient
+      color: "black" // Ensures text is readable
 
      }}>
       <h1>Prediction Page</h1>
@@ -198,10 +198,10 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
   <thead>
     <tr>
-      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Year</th>
-      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Semester</th>
-      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Semester GPA</th>
-      <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Year GPA</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Year</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Semester</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Semester GPA</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Year GPA</th>
     </tr>
   </thead>
   <tbody>
@@ -210,21 +210,21 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
         <tr key={`${year}-${sem.semester}`}>
           {index === 0 && (
             <td 
-              style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }} 
+              style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
               rowSpan={data.semesters.length}
             >
               {year}
             </td>
           )}
-          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
+          <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
             {sem.semester}
           </td>
-          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>
+          <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
             {sem.semGPA.toFixed(2)}
           </td>
           {index === 0 && (
             <td 
-              style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }} 
+              style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
               rowSpan={data.semesters.length}
             >
               {data.yearGPA.toFixed(2)}
@@ -234,10 +234,10 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
       ))
     )}
     <tr>
-      <td colSpan={3} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+      <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
         Cumulative GPA
       </td>
-      <td colSpan={1} style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
+      <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
         {currentGPA.toFixed(2)}
       </td>
     </tr>
@@ -275,17 +275,17 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
           }}>
             <thead>
               <tr>
-                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Subject ID</th>
-                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Subject Name</th>
-                <th style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>Credits</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Subject ID</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Subject Name</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Credits</th>
               </tr>
             </thead>
             <tbody>
               {nextSemesterSubjects.map((subject) => (
                 <tr key={subject.subjectId}>
-                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
-                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
-                  <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
+                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
+                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
+                  <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
                 </tr>
               ))}
             </tbody>
