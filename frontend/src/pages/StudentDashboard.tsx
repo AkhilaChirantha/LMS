@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import UserImage from "../assets/user.png";
 
 // Define the structure for SubjectDetails and Enrollment interfaces
 interface SubjectDetails {
@@ -137,7 +137,7 @@ const StudentDashboard: React.FC = () => {
           <span>WELCOME! {username}</span> 
         </div>
         <div>
-          <img src={user?.image || "image.png"} alt="" style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+          <img src={user?.image || UserImage} alt="" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
         </div>
       </div>
 
