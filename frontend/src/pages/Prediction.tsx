@@ -17,7 +17,7 @@ interface Subject {
 }
 
 
-// In this section shows all the content. here is the place that calling the following sections.
+// First Section --In this section shows all the content. here is the place that calling the following sections.
 const PredictionPage: React.FC = () => {
   const location = useLocation();
 
@@ -31,12 +31,12 @@ const PredictionPage: React.FC = () => {
     <div style={{ padding: "20px" }}>
       <h1>Prediction Page</h1>
         <CurrentGPATable semesterGPAValues={semesterGPAValues} />
-        <Prediction />
+        <Prediction semesterGPAValues={semesterGPAValues} />
     </div>
   );
 };
 
-// here is the code that creating functionalities and interface.
+// 2 nd Section -- here is the code that creating functionalities and interface.
 const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
 
   const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
@@ -280,21 +280,171 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
 };
 
 
-// This section is used for the prediction to the next semester credits.
-const Prediction: React.FC = () =>{
+// 3 rd Section -- This section is used for the prediction to the next semester credits.
+const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAValues}) => { 
+  const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
+  const [allCombinations, setAllCombinations] = useState<
+    { combination: string[]; totalPoints: number; gpa: number }[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Determine next semester
+  const nextSemester = useMemo(() => {
+    if (semesterGPAValues.length === 0) return null;
 
+    const zeroGPASemester = semesterGPAValues.find(sem => sem.semGPA === 0);
+    if (zeroGPASemester) {
+      return { year: zeroGPASemester.year, semester: zeroGPASemester.semester };
+    }
+
+    const sortedSemesters = [...semesterGPAValues].sort((a, b) => {
+      if (a.year !== b.year) return parseInt(a.year) - parseInt(b.year);
+      return a.semester === 'First' ? -1 : 1;
+    });
+
+    const lastSemester = sortedSemesters[sortedSemesters.length - 1];
+    
+    let nextYear = lastSemester.year;
+    let nextSemesterName = 'Second';
+
+    if (lastSemester.semester === 'Second') {
+      nextYear = (parseInt(lastSemester.year) + 1).toString();
+      nextSemesterName = 'First';
+    }
+
+    return { year: nextYear, semester: nextSemesterName };
+  }, [semesterGPAValues]);
+
+  // Grade mapping
+  const grades: { [key: string]: number } = {
+    A: 4.0, "A-": 3.7, "B+": 3.3, B: 3.0, "B-": 2.7, "C+": 2.3, C: 2.0,
+  };
+
+  // Compute total credits
+  const totalCredits = useMemo(() => {
+    return nextSemesterSubjects.reduce((sum, subject) => sum + subject.credit, 0);
+  }, [nextSemesterSubjects]);
+
+  // Calculate total points
+  const calculateTotalPoints = (combination: string[]): number => {
+    return combination.reduce((total, grade, index) => {
+      const credit = nextSemesterSubjects[index]?.credit || 0;
+      return total + (grades[grade] || 0) * credit;
+    }, 0);
+  };
+
+  // Generate all possible grade combinations
+  const generateGradeCombinations = (gradesList: string[], repeat: number): string[][] => {
+    if (repeat === 0) return [[]];
+    const smallerCombinations = generateGradeCombinations(gradesList, repeat - 1);
+    return gradesList.flatMap(grade => smallerCombinations.map(combination => [grade, ...combination]));
+  };
+
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!nextSemester) return;
+
+      try {
+        setIsLoading(true);
+        const response = await axios.get<Subject[]>('http://localhost:5001/api/subjects/sem', {
+          params: { year: nextSemester.year, semester: nextSemester.semester }
+        });
+
+        console.log('Fetched subjects:', response.data);
+        setNextSemesterSubjects(response.data);
+      } catch (error) {
+        console.error('Failed to fetch subjects:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSubjects();
+  }, [nextSemester]);
+
+  // Generate all grade combinations when subjects are available
+  useEffect(() => {
+    if (nextSemesterSubjects.length === 0) return;
+
+    const gradesList = Object.keys(grades);
+    const gradeCombinations = generateGradeCombinations(gradesList, nextSemesterSubjects.length);
+
+    console.log('Generated combinations:', gradeCombinations.length);
+
+    // Calculate GPA for each combination
+    const calculatedResults = gradeCombinations.map((combination) => {
+      const totalPoints = calculateTotalPoints(combination);
+      const gpa = totalPoints / totalCredits;
+      return { combination, totalPoints, gpa };
+    });
+
+    console.log('Generated all grade combinations:', calculatedResults);
+    setAllCombinations(calculatedResults);
+  }, [nextSemesterSubjects]);
+
+  if (isLoading) {
+    return <div>Loading subjects and generating grade combinations...</div>;
+  }
+
+  if (nextSemesterSubjects.length === 0) {
+    return <div>No subjects found for the next semester.</div>;
+  }
 
   return (
-    <>
-      <div style={{paddingTop:'40px'}}> Anju BAba</div>
-      <div> Anju BAba</div>
-      <div> Anju BAba</div>
-      <div> Anju BAba</div>
-    </>
-
+    <div>
+      <div style={{ fontSize: '30px', paddingTop: '50px', fontFamily: 'Gotu', color: 'red' }}>
+        Prediction Combination
+      </div>
+      <div>
+        <p>Number of subjects: {nextSemesterSubjects.length}</p>
+        <p>Total credits: {totalCredits}</p>
+      </div>
+      <table border={1} style={{ width: "100%", textAlign: "left" }}>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>GPA</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allCombinations.length > 0 ? (
+            allCombinations.map((result, index) => (
+              <React.Fragment key={index}>
+                {nextSemesterSubjects.map((subject, i) => (
+                  <tr key={`${index}-${i}`}>
+                    <td>{subject.subjectName}</td>
+                    <td>{subject.credit}</td>
+                    <td>{result.combination[i]}</td>
+                    {i === 0 && (
+                      <td rowSpan={nextSemesterSubjects.length}>{result.gpa.toFixed(2)}</td>
+                    )}
+                  </tr>
+                ))}
+                <br></br>
+                <tr className="h-4" />
+              </React.Fragment>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4} style={{ textAlign: "center" }}>
+                No grade combinations generated.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <p>Total grade combinations: {allCombinations.length}</p>
+    </div>
   );
-}
+};
+
+
+
+
+
 
 
 
