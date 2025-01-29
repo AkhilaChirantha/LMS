@@ -198,10 +198,10 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
   <thead>
     <tr>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Year</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Semester</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Semester GPA</th>
-      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Year GPA</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester GPA</th>
+      <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year GPA</th>
     </tr>
   </thead>
   <tbody>
@@ -275,9 +275,9 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
           }}>
             <thead>
               <tr>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Subject ID</th>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Subject Name</th>
-                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>Credits</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject ID</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject Name</th>
+                <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Credits</th>
               </tr>
             </thead>
             <tbody>
