@@ -164,47 +164,66 @@ const GPAdetails: React.FC = () => {
 }}>
 
 <thead>
-  <tr style={{ backgroundColor: "cadetblue", color: "#fff", fontWeight: "bold" }}>
+  <tr style={{ 
+    backgroundColor: "cadetblue", 
+    color: "#fff", 
+    fontWeight: "bold" }}>
     {["Year", "Semester", "Semester GPA"].map((heading, index) => (
-      <th key={index} style={{ border: "1px solid #ddd", padding: "12px", textAlign: index === 0 ? "center" : "left" }}>
+      <th key={index} 
+      style={{ 
+        border: "1px solid #ddd", 
+        padding: "12px", textAlign: 
+        index === 0 ? "center" : "left" }}>
         {heading}
       </th>
     ))}
   </tr>
 </thead>
+<tbody>
+  {semesterGPAValues.map((semester, index, array) => {
+    const isFirstOfYear = index === 0 || semester.year !== array[index - 1].year;
+    const rowSpan = array.filter((s) => s.year === semester.year).length;
 
-
-    <tbody>
-      {semesterGPAValues.map((semester, index) => (
-        <tr key={index} style={{
-          transition: "background-color 0.3s ease",
-        }}>
-          <td style={{
-            border: "1px solid #ddd", 
-            padding: "10px", 
-            textAlign: "left"
-          }}>
+    return (
+      <tr key={index} style={{ transition: "background-color 0.3s ease" }}>
+        {isFirstOfYear && (
+          <td
+            rowSpan={rowSpan}
+            style={{
+              border: "1px solid #ddd",
+              padding: "10px",
+              textAlign: "center",
+              verticalAlign: "middle",
+              backgroundColor: "#f0f0f0",
+              fontWeight: "bold",
+            }}
+          >
             {semester.year}
           </td>
-          <td style={{
-            border: "1px solid #ddd", 
-            padding: "10px", 
-            textAlign: "left"
-          }}>
-            {semester.semester}
-          </td>
-          <td style={{
-            border: "1px solid #ddd", 
-            padding: "10px", 
-            textAlign: "left", 
-            color: "#1e2a47", 
-            fontWeight: "bold"
-          }}>
-            {semester.semGPA.toFixed(2)}
-          </td>
-        </tr>
-      ))}
-    </tbody>
+        )}
+        <td style={{ 
+          border: "1px solid #ddd", 
+          padding: "10px",
+          fontWeight:"bold", 
+          textAlign: "center" }}>
+          {semester.semester}
+        </td>
+        <td
+          style={{
+            border: "1px solid #ddd",
+            padding: "10px",
+            textAlign: "center",
+            color: "#1e2a47",
+            fontWeight: "bold",
+          }}
+        >
+          {semester.semGPA.toFixed(2)}
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
   </table>
 </div>
 
