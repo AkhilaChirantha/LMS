@@ -163,36 +163,16 @@ const GPAdetails: React.FC = () => {
     overflow: "hidden"
 }}>
 
-    <thead>
-      <tr style={{
-        backgroundColor: "cadetblue", 
-        color: "#fff", 
-        fontWeight: "bold"
-      }}>
-        <th style={{
-          border: "1px solid #ddd", 
-          padding: "12px", 
-        textAlign: "center"
-          
-        }}>
-          Year
-        </th>
-        <th style={{
-          border: "1px solid #ddd", 
-          padding: "12px", 
-          textAlign: "left"
-        }}>
-          Semester
-        </th>
-        <th style={{
-          border: "1px solid #ddd", 
-          padding: "12px", 
-          textAlign: "left"
-        }}>
-          Semester GPA
-        </th>
-      </tr>
-    </thead>
+<thead>
+  <tr style={{ backgroundColor: "cadetblue", color: "#fff", fontWeight: "bold" }}>
+    {["Year", "Semester", "Semester GPA"].map((heading, index) => (
+      <th key={index} style={{ border: "1px solid #ddd", padding: "12px", textAlign: index === 0 ? "center" : "left" }}>
+        {heading}
+      </th>
+    ))}
+  </tr>
+</thead>
+
 
     <tbody>
       {semesterGPAValues.map((semester, index) => (
