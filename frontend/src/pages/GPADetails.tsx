@@ -227,44 +227,75 @@ const GPAdetails: React.FC = () => {
 
 
         {/* Year-wise Table */}
-        <div style={{ width: '100%', marginBottom: '20px' }}>
+        <div style={{ width: '100%', marginBottom: '20px', }}>
 
         <div style={{
                 marginBottom: "40px", 
-                background: "#fff", 
+                background: "rgb(178, 230, 249)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}>
 
 
-          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Year-wise GPA</h2>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              marginTop: "20px",
-            }}
-          >
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
-              </tr>
-            </thead>
-            <tbody>
-              {yearWiseGPA.map((yearData, index) => (
-                <tr key={index}>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>
-                    {yearData.year}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>
-                    {yearData.yearGPA.toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <h2 style={{  fontSize: "22px", marginBottom: "15px" }}>YEAR-WISE GPA</h2>
+          <table style={{
+    width: "100%", 
+    borderCollapse: "collapse", 
+    boxSizing: "border-box",
+    borderRadius: "5px",
+    overflow: "hidden",
+    border: "1px solid #ddd"
+}}>
+
+<thead>
+  <tr style={{ 
+    backgroundColor: "cadetblue", 
+    color: "#fff", 
+    fontWeight: "bold"
+  }}>
+    <th style={{ 
+      border: "2px solid #ddd", 
+      padding: "12px", 
+      textAlign: "center"
+    }}>
+      Year
+    </th>
+    <th style={{ 
+      border: "1px solid #ddd", 
+      padding: "12px", 
+      textAlign: "center"
+    }}>
+      Year GPA
+    </th>
+  </tr>
+</thead>
+
+<tbody style={{ backgroundColor: "lightcyan" }}>
+  {yearWiseGPA.map((yearData, index) => (
+    <tr key={index} style={{ transition: "background-color 0.3s ease" }}>
+      <td style={{ 
+        border: "1px solid #ddd", 
+        padding: "10px", 
+        textAlign: "center", 
+        fontWeight: "bold" 
+      }}>
+        {yearData.year}
+      </td>
+      <td style={{ 
+        border: "1px solid #ddd", 
+        padding: "10px", 
+        textAlign: "center", 
+        color: "#1e2a47" 
+      }}>
+        {yearData.yearGPA.toFixed(2)}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+</table>
+
         </div>
         </div>
 
