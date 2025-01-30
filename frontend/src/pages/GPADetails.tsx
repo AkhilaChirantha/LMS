@@ -82,7 +82,7 @@ const GPAdetails: React.FC = () => {
   };
   
   return (
-    <div style={{background: 'linear-gradient(135deg,rgb(93, 195, 192),rgb(255, 255, 255))', }}>
+    <div style={{backgroundColor:"rgb(209, 248, 252)" }}>
     <div style={{ padding: "20px" }}>
       <div style={{ display: 'flex', flexDirection: 'column'  }}>
 
@@ -93,11 +93,11 @@ const GPAdetails: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "30px", 
-        backgroundColor: '#E0F7FA', 
+        backgroundColor: 'rgb(178, 230, 249)', 
         borderRadius: "10px", 
         marginTop:"10px",
         marginBottom: "20px", 
-        boxShadow: "0 4px 6px rgba(181, 34, 34, 0.1)"
+        boxShadow: "0 5px 8px rgba(0, 0, 0, 0.1)"
       }}>
         <div style={{ color: "black", fontSize: "35px", fontWeight: "500" }}>
           <span>WELCOME! {username}</span> 
@@ -111,7 +111,7 @@ const GPAdetails: React.FC = () => {
           width: '100%', 
           display: 'flex', 
           justifyContent: 'flex-end', 
-          marginBottom: '20px' 
+          marginBottom: '50px' 
         }}>
           <button 
         onClick={handleNavigateToPrediction}
@@ -142,7 +142,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
   marginBottom: "40px", 
-  background: "#fff", 
+  background: "rgb(178, 230, 249)", 
   padding: "25px", 
   borderRadius: "10px", 
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -153,7 +153,7 @@ const GPAdetails: React.FC = () => {
     marginBottom: "15px", 
     fontWeight: "bold"
   }}>
-    Semester-wise GPA
+    SEMESTER-WISE GPA
   </h2>
   <table style={{
     width: "100%", 
@@ -172,14 +172,15 @@ const GPAdetails: React.FC = () => {
       <th key={index} 
       style={{ 
         border: "1px solid #ddd", 
-        padding: "12px", textAlign: 
-        index === 0 ? "center" : "left" }}>
+        padding: "12px", 
+        textAlign:"center"
+        }}>
         {heading}
       </th>
     ))}
   </tr>
 </thead>
-<tbody>
+<tbody style={{backgroundColor:"lightcyan"}}>
   {semesterGPAValues.map((semester, index, array) => {
     const isFirstOfYear = index === 0 || semester.year !== array[index - 1].year;
     const rowSpan = array.filter((s) => s.year === semester.year).length;
@@ -194,7 +195,6 @@ const GPAdetails: React.FC = () => {
               padding: "10px",
               textAlign: "center",
               verticalAlign: "middle",
-              backgroundColor: "#f0f0f0",
               fontWeight: "bold",
             }}
           >
@@ -204,7 +204,6 @@ const GPAdetails: React.FC = () => {
         <td style={{ 
           border: "1px solid #ddd", 
           padding: "10px",
-          fontWeight:"bold", 
           textAlign: "center" }}>
           {semester.semester}
         </td>
@@ -214,7 +213,6 @@ const GPAdetails: React.FC = () => {
             padding: "10px",
             textAlign: "center",
             color: "#1e2a47",
-            fontWeight: "bold",
           }}
         >
           {semester.semGPA.toFixed(2)}
