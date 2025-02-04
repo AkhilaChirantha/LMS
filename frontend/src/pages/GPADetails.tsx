@@ -318,14 +318,18 @@ const GPAdetails: React.FC = () => {
             }}
           >
             <thead>
-              <tr>
+              <tr style={{ 
+                          backgroundColor: "cadetblue", 
+                          color: "#fff", 
+                          fontWeight: "bold"
+                        }}>
                 <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
                 <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
               </tr>
             </thead>
             <tbody style={{ backgroundColor: "lightcyan" }}>
               {yearWiseGPA.map((yearData, index) => (
-                <tr key={index}>
+                <tr key={index} style={{ transition: "background-color 0.3s ease" }}>
                   <td style={{ border: "1px solid black", padding: "10px" }}>
                     {yearData.year}
                   </td>
