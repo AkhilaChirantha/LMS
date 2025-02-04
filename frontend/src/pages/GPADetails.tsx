@@ -82,7 +82,7 @@ const GPAdetails: React.FC = () => {
   };
   
   return (
-    <div style={{backgroundColor:"rgb(231, 251, 254)" }}>
+    <div style={{backgroundColor:"#84B6BDFF" }}>
     <div style={{ padding: "20px" }}>
       <div style={{ display: 'flex', flexDirection: 'column'  }}>
 
@@ -93,7 +93,7 @@ const GPAdetails: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "30px", 
-        backgroundColor: 'rgb(159, 225, 249)', 
+        backgroundColor: 'rgb(212, 240, 250)', 
         borderRadius: "10px", 
         marginTop:"10px",
         marginBottom: "20px", 
@@ -142,7 +142,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
   marginBottom: "40px", 
-  background: "rgb(178, 230, 249)", 
+  background: "rgb(212, 240, 250)", 
   padding: "25px", 
   borderRadius: "10px", 
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -228,7 +228,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(178, 230, 249)", 
+                background: "rgb(212, 240, 250)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -301,7 +301,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(178, 230, 249)",  
+                background: "rgb(212, 240, 250)",  
                 padding: "25px", 
                 borderRadius: "12px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -363,7 +363,7 @@ const GPAdetails: React.FC = () => {
         <div style={{ width: '100%', marginTop: '20px' }}>
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(178, 230, 249)", 
+                background: "rgb(212, 240, 250)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
