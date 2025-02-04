@@ -142,7 +142,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
   marginBottom: "40px", 
-  background: "rgb(212, 240, 250)", 
+  background: "rgb(255, 255, 255)", 
   padding: "25px", 
   borderRadius: "10px", 
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -228,7 +228,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(212, 240, 250)", 
+                background: "rgb(255, 255, 255)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -301,7 +301,7 @@ const GPAdetails: React.FC = () => {
 
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(212, 240, 250)",  
+                background: "rgb(255, 255, 255)",  
                 padding: "25px", 
                 borderRadius: "12px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -363,7 +363,7 @@ const GPAdetails: React.FC = () => {
         <div style={{ width: '100%', marginTop: '20px' }}>
         <div style={{
                 marginBottom: "40px", 
-                background: "rgb(212, 240, 250)", 
+                background: "rgb(255, 255, 255)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
