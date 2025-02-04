@@ -82,7 +82,7 @@ const GPAdetails: React.FC = () => {
   };
   
   return (
-    <div style={{backgroundColor:"rgb(209, 248, 252)" }}>
+    <div style={{backgroundColor:"rgb(231, 251, 254)" }}>
     <div style={{ padding: "20px" }}>
       <div style={{ display: 'flex', flexDirection: 'column'  }}>
 
@@ -93,7 +93,7 @@ const GPAdetails: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "30px", 
-        backgroundColor: 'rgb(178, 230, 249)', 
+        backgroundColor: 'rgb(159, 225, 249)', 
         borderRadius: "10px", 
         marginTop:"10px",
         marginBottom: "20px", 
@@ -148,10 +148,7 @@ const GPAdetails: React.FC = () => {
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
 }}>
   <h2 style={{
-    color: "#1e2a47", 
-    fontSize: "22px", 
-    marginBottom: "15px", 
-    fontWeight: "bold"
+    color: "#1e2a47", fontSize: "22px", marginBottom: "15px"
   }}>
     SEMESTER-WISE GPA
   </h2>
@@ -238,7 +235,7 @@ const GPAdetails: React.FC = () => {
               }}>
 
 
-          <h2 style={{  fontSize: "22px", marginBottom: "15px" }}>YEAR-WISE GPA</h2>
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>YEAR-WISE GPA</h2>
           <table style={{
     width: "100%", 
     borderCollapse: "collapse", 
@@ -310,7 +307,7 @@ const GPAdetails: React.FC = () => {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}>
 
-          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Current GPA Calculation</h2>
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>CURRENT GPA CALCULATION</h2>
           <table
             style={{
               width: "100%", 
@@ -371,7 +368,7 @@ const GPAdetails: React.FC = () => {
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}>
-          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Final GPA Calculation</h2>
+          <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>FINAL GPA CALCULATION</h2>
           <table
             style={{
               width: "100%",
