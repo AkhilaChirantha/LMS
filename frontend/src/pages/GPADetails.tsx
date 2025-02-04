@@ -278,13 +278,13 @@ const GPAdetails: React.FC = () => {
         border: "1px solid #ddd", 
         padding: "10px", 
         textAlign: "center", 
-        fontWeight: "bold" 
+        
       }}>
         {yearData.year}
       </td>
       <td style={{ 
         border: "1px solid #ddd", 
-        padding: "10px", 
+        padding: "12px", 
         textAlign: "center", 
         color: "#1e2a47" 
       }}>
@@ -306,43 +306,54 @@ const GPAdetails: React.FC = () => {
                 marginBottom: "40px", 
                 background: "rgb(178, 230, 249)",  
                 padding: "25px", 
-                borderRadius: "10px", 
+                borderRadius: "12px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}>
 
           <h2 style={{ color: "#1e2a47", fontSize: "22px", marginBottom: "15px" }}>Current GPA Calculation</h2>
           <table
             style={{
-              width: "100%",
-              borderCollapse: "collapse",
+              width: "100%", 
+              borderCollapse: "collapse", 
+              boxSizing: "border-box",
+              borderRadius: "10px",
+              overflow: "hidden",
+              border: "1px solid #ddd"
             }}
           >
             <thead>
               <tr style={{ 
                           backgroundColor: "cadetblue", 
                           color: "#fff", 
-                          fontWeight: "bold"
+                          fontWeight: "bold",
+              border: "1px solid #ddd",
+              padding: "12px"
                         }}>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
+                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Year</th>
+                <th style={{ border: "1px solid #ddd", padding: "12px" }}>Year GPA</th>
               </tr>
             </thead>
-            <tbody style={{ backgroundColor: "lightcyan" }}>
+            <tbody style={{ backgroundColor: "lightcyan",
+                    border: "1px solid #ddd", 
+                    padding: "12px", 
+                    textAlign: "center", 
+
+             }}>
               {yearWiseGPA.map((yearData, index) => (
                 <tr key={index} style={{ transition: "background-color 0.3s ease" }}>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>
+                  <td style={{ border: "2px solid #ddd", padding: "10px" }}>
                     {yearData.year}
                   </td>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>
+                  <td style={{ border: "2px solid #ddd", padding: "10px" }}>
                     {yearData.yearGPA.toFixed(2)}
                   </td>
                 </tr>
               ))}
               <tr>
-                <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
+                <td colSpan={1} style={{ border: "2px solid #ddd", padding: "10px", fontWeight: 'bold' }}>
                   Current GPA
                 </td>
-                <td style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
+                <td style={{ border: "2px solid #ddd", padding: "10px", fontWeight: 'bold' }}>
                   {currentGPA.toFixed(2)}
                 </td>
               </tr>
@@ -355,7 +366,7 @@ const GPAdetails: React.FC = () => {
         <div style={{ width: '100%', marginTop: '20px' }}>
         <div style={{
                 marginBottom: "40px", 
-                background: "#fff", 
+                background: "rgb(178, 230, 249)", 
                 padding: "25px", 
                 borderRadius: "10px", 
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -365,42 +376,58 @@ const GPAdetails: React.FC = () => {
             style={{
               width: "100%",
               borderCollapse: "collapse",
+              border: "1px solid #ddd",
             }}
           >
             <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Weight</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Weighted GPA</th>
+              <tr
+               style={{ 
+                backgroundColor: "cadetblue", 
+                color: "#fff", 
+                fontWeight: "bold",
+    
+    padding: "12px"
+              }}
+              >
+                <th style={{ border: "2px solid #ddd", padding: "10px" }}>Year</th>
+                <th style={{ border: "2px solid #ddd", padding: "10px" }}>Year GPA</th>
+                <th style={{ border: "2px solid #ddd", padding: "10px" }}>Weight</th>
+                <th style={{ border: "2px solid #ddd", padding: "10px" }}>Weighted GPA</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+            style={{ backgroundColor: "lightcyan",
+              border: "2px solid #ddd", 
+              padding: "12px", 
+              textAlign: "center", 
+
+       }}
+            >
               {yearWiseGPA.map((yearData, index) => {
                 const weights = [10, 20, 30, 40];
                 const weightedGPA = yearData.yearGPA * (weights[index] / 100);
                 return (
                   <tr key={index}>
-                    <td style={{ border: "1px solid black", padding: "10px" }}>
+                    <td style={{border: "2px solid #ddd", padding: "10px" }}>
                       {yearData.year}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "10px" }}>
+                    <td style={{ border: "2px solid #ddd", padding: "10px" }}>
                       {yearData.yearGPA.toFixed(2)}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "10px" }}>
+                    <td style={{ border: "2px solid #ddd", padding: "10px" }}>
                       {weights[index]}%
                     </td>
-                    <td style={{ border: "1px solid black", padding: "10px" }}>
+                    <td style={{ border: "2px solid #ddd", padding: "10px" }}>
                       {weightedGPA.toFixed(2)}
                     </td>
                   </tr>
                 );
               })}
               <tr>
-                <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
+                <td colSpan={3} style={{ border: "2px solid #ddd", padding: "10px", fontWeight: 'bold' }}>
                   Final GPA
                 </td>
-                <td style={{ border: "1px solid black", padding: "10px", fontWeight: 'bold' }}>
+                <td style={{ border: "2px solid #ddd", padding: "10px", fontWeight: 'bold' }}>
                   {finalGPA.toFixed(2)}
                 </td>
               </tr>
