@@ -17,7 +17,7 @@ interface Subject {
 }
 
 
-// In this section shows all the content. here is the place that calling the following sections.
+// First Section --In this section shows all the content. here is the place that calling the following sections.
 const PredictionPage: React.FC = () => {
   const location = useLocation();
 
@@ -28,20 +28,15 @@ const PredictionPage: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "20px",
-      minHeight: "100vh",
-      background: "linear-gradient(135deg,rgb(198, 224, 233),rgb(235, 242, 243))", // Cyan Gradient
-      color: "black" // Ensures text is readable
-
-     }}>
+    <div style={{ padding: "20px" }}>
       <h1>Prediction Page</h1>
         <CurrentGPATable semesterGPAValues={semesterGPAValues} />
-        <Prediction />
+        <Prediction semesterGPAValues={semesterGPAValues} />
     </div>
   );
 };
 
-// here is the code that creating functionalities and interface.
+// 2 nd Section -- here is the code that creating functionalities and interface.
 const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
 
   const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
@@ -195,119 +190,87 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
   return (
     <div style={{ width: "100%", marginTop: "20px" }}>
       <h2>Semester-Wise GPA Calculation</h2>
-      <div style={{
-  backgroundColor: "white",
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  width: "100%",
-  overflowX: "auto"
-}}>
-  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-    <thead>
-      <tr>
-        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year</th>
-        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester</th>
-        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Semester GPA</th>
-        <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Year GPA</th>
-      </tr>
-    </thead>
-    <tbody>
-      {Object.entries(yearWiseData).flatMap(([year, data]) => 
-        data.semesters.map((sem, index) => (
-          <tr key={`${year}-${sem.semester}`}>
-            {index === 0 && (
-              <td 
-                style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
-                rowSpan={data.semesters.length}
-              >
-                {year}
-              </td>
-            )}
-            <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
-              {sem.semester}
-            </td>
-            <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>
-              {sem.semGPA.toFixed(2)}
-            </td>
-            {index === 0 && (
-              <td 
-                style={{ border: "1px solid black", padding: "10px", textAlign: "center" }} 
-                rowSpan={data.semesters.length}
-              >
-                {data.yearGPA.toFixed(2)}
-              </td>
-            )}
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Semester GPA</th>
+            <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
           </tr>
-        ))
-      )}
-      <tr>
-        <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
-          Cumulative GPA
-        </td>
-        <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold", textAlign: "center" }}>
-          {currentGPA.toFixed(2)}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-      <div style={{
-  background: "Darkcyan", // Dark blue background
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0px 4px 10px rgba(4, 53, 68, 0.2)", // Soft shadow
-  color: "#fff", // White text color
-  fontSize: "18px",
-  marginTop: "20px",
-  textAlign: "center"
-}}>
-  <p><strong>Degree Classification:</strong> <span style={{ color: 'gold', fontSize: '20px', fontWeight: 'bold'}}>{degreeClassification}</span></p>
-  {nextClass && requiredGPA !== null ? (
-    <p>
-      To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
-    </p>
-  ) : (
-    <p>You are already at the highest degree classification.</p>
-  )}
-</div>
-
+        </thead>
+        <tbody>
+          {Object.entries(yearWiseData).flatMap(([year, data]) => 
+            data.semesters.map((sem, index) => (
+              <tr key={`${year}-${sem.semester}`}>
+                {index === 0 && (
+                  <td 
+                    style={{ border: "1px solid black", padding: "10px" }} 
+                    rowSpan={data.semesters.length}
+                  >
+                    {year}
+                  </td>
+                )}
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {sem.semester}
+                </td>
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {sem.semGPA.toFixed(2)}
+                </td>
+                {index === 0 && (
+                  <td 
+                    style={{ border: "1px solid black", padding: "10px" }} 
+                    rowSpan={data.semesters.length}
+                  >
+                    {data.yearGPA.toFixed(2)}
+                  </td>
+                )}
+              </tr>
+            ))
+          )}
+          <tr>
+            <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
+              Cumulative GPA
+            </td>
+            <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
+              {currentGPA.toFixed(2)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ marginTop: "20px" }}>
+        <p><strong>Degree Classification:</strong> <strong style={{color:'#ec08d8', fontSize:'20px'}}>{degreeClassification}</strong> </p>
+        {nextClass && requiredGPA !== null ? (
+          <p>
+            To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
+          </p>
+        ) : (
+          <p>You are already at the highest degree classification.</p>
+        )}
+      </div>
 
       {/* Next Semester Subjects Section */}
       <div style={{ marginTop: "20px" }}>
         <h3>Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})</h3>
         {nextSemesterSubjects.length > 0 ? (
-          <div style={{
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            width: "100%",
-            overflowX: "auto"
-          }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject ID</th>
-                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Subject Name</th>
-                  <th style={{ border: "1px solid black", padding: "10px", textAlign: "center", backgroundColor: "powderblue" }}>Credits</th>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
+                <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nextSemesterSubjects.map((subject) => (
+                <tr key={subject.subjectId}>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectId}</td>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectName}</td>
+                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.credit}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {nextSemesterSubjects.map((subject) => (
-                  <tr key={subject.subjectId}>
-                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectId}</td>
-                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.subjectName}</td>
-                    <td style={{ border: "1px solid black", padding: "10px", textAlign: "center" }}>{subject.credit}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          
+              ))}
+            </tbody>
+          </table>
         ) : (
           <p>No subjects found for the next semester.</p>
         )}
@@ -317,21 +280,171 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
 };
 
 
-// This section is used for the prediction to the next semester credits.
-const Prediction: React.FC = () =>{
+// 3 rd Section -- This section is used for the prediction to the next semester credits.
+const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAValues}) => { 
+  const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
+  const [allCombinations, setAllCombinations] = useState<
+    { combination: string[]; totalPoints: number; gpa: number }[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Determine next semester
+  const nextSemester = useMemo(() => {
+    if (semesterGPAValues.length === 0) return null;
 
+    const zeroGPASemester = semesterGPAValues.find(sem => sem.semGPA === 0);
+    if (zeroGPASemester) {
+      return { year: zeroGPASemester.year, semester: zeroGPASemester.semester };
+    }
+
+    const sortedSemesters = [...semesterGPAValues].sort((a, b) => {
+      if (a.year !== b.year) return parseInt(a.year) - parseInt(b.year);
+      return a.semester === 'First' ? -1 : 1;
+    });
+
+    const lastSemester = sortedSemesters[sortedSemesters.length - 1];
+    
+    let nextYear = lastSemester.year;
+    let nextSemesterName = 'Second';
+
+    if (lastSemester.semester === 'Second') {
+      nextYear = (parseInt(lastSemester.year) + 1).toString();
+      nextSemesterName = 'First';
+    }
+
+    return { year: nextYear, semester: nextSemesterName };
+  }, [semesterGPAValues]);
+
+  // Grade mapping
+  const grades: { [key: string]: number } = {
+    A: 4.0, "A-": 3.7, "B+": 3.3, B: 3.0, "B-": 2.7, "C+": 2.3, C: 2.0,
+  };
+
+  // Compute total credits
+  const totalCredits = useMemo(() => {
+    return nextSemesterSubjects.reduce((sum, subject) => sum + subject.credit, 0);
+  }, [nextSemesterSubjects]);
+
+  // Calculate total points
+  const calculateTotalPoints = (combination: string[]): number => {
+    return combination.reduce((total, grade, index) => {
+      const credit = nextSemesterSubjects[index]?.credit || 0;
+      return total + (grades[grade] || 0) * credit;
+    }, 0);
+  };
+
+  // Generate all possible grade combinations
+  const generateGradeCombinations = (gradesList: string[], repeat: number): string[][] => {
+    if (repeat === 0) return [[]];
+    const smallerCombinations = generateGradeCombinations(gradesList, repeat - 1);
+    return gradesList.flatMap(grade => smallerCombinations.map(combination => [grade, ...combination]));
+  };
+
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!nextSemester) return;
+
+      try {
+        setIsLoading(true);
+        const response = await axios.get<Subject[]>('http://localhost:5001/api/subjects/sem', {
+          params: { year: nextSemester.year, semester: nextSemester.semester }
+        });
+
+        console.log('Fetched subjects:', response.data);
+        setNextSemesterSubjects(response.data);
+      } catch (error) {
+        console.error('Failed to fetch subjects:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSubjects();
+  }, [nextSemester]);
+
+  // Generate all grade combinations when subjects are available
+  useEffect(() => {
+    if (nextSemesterSubjects.length === 0) return;
+
+    const gradesList = Object.keys(grades);
+    const gradeCombinations = generateGradeCombinations(gradesList, nextSemesterSubjects.length);
+
+    console.log('Generated combinations:', gradeCombinations.length);
+
+    // Calculate GPA for each combination
+    const calculatedResults = gradeCombinations.map((combination) => {
+      const totalPoints = calculateTotalPoints(combination);
+      const gpa = totalPoints / totalCredits;
+      return { combination, totalPoints, gpa };
+    });
+
+    console.log('Generated all grade combinations:', calculatedResults);
+    setAllCombinations(calculatedResults);
+  }, [nextSemesterSubjects]);
+
+  if (isLoading) {
+    return <div>Loading subjects and generating grade combinations...</div>;
+  }
+
+  if (nextSemesterSubjects.length === 0) {
+    return <div>No subjects found for the next semester.</div>;
+  }
 
   return (
-    <>
-      <div style={{paddingTop:'40px'}}> Anju BAba</div>
-      <div> Anju BAba</div>
-      <div> Anju BAba</div>
-      <div> Anju BAba</div>
-    </>
-
+    <div>
+      <div style={{ fontSize: '30px', paddingTop: '50px', fontFamily: 'Gotu', color: 'red' }}>
+        Prediction Combination
+      </div>
+      <div>
+        <p>Number of subjects: {nextSemesterSubjects.length}</p>
+        <p>Total credits: {totalCredits}</p>
+      </div>
+      <table border={1} style={{ width: "100%", textAlign: "left" }}>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>GPA</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allCombinations.length > 0 ? (
+            allCombinations.map((result, index) => (
+              <React.Fragment key={index}>
+                {nextSemesterSubjects.map((subject, i) => (
+                  <tr key={`${index}-${i}`}>
+                    <td>{subject.subjectName}</td>
+                    <td>{subject.credit}</td>
+                    <td>{result.combination[i]}</td>
+                    {i === 0 && (
+                      <td rowSpan={nextSemesterSubjects.length}>{result.gpa.toFixed(2)}</td>
+                    )}
+                  </tr>
+                ))}
+                <br></br>
+                <tr className="h-4" />
+              </React.Fragment>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4} style={{ textAlign: "center" }}>
+                No grade combinations generated.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <p>Total grade combinations: {allCombinations.length}</p>
+    </div>
   );
-}
+};
+
+
+
+
+
 
 
 
