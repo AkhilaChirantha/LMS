@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SubjectList: React.FC = () => {
@@ -20,46 +20,52 @@ const SubjectList: React.FC = () => {
     }, []);
 
     return (
-        <>
-        <div style={{ maxWidth: '900px', margin: 'auto', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-            <h2 style={{ textAlign: 'center' }}>Subjects</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                <thead>
-                    <tr style={{ backgroundColor: '#f4f4f4' }}>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Year</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Semester</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Subject ID</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Subject Name</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Credits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {subjects.map((subject) => (
-                        <tr key={subject._id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>{subject.year}</td>
-                            <td style={{ padding: '10px' }}>{subject.semester}</td>
-                            <td style={{ padding: '10px' }}>{subject.subjectId}</td>
-                            <td style={{ padding: '10px' }}>{subject.subjectName}</td>
-                            <td style={{ padding: '10px' }}>{subject.credit}</td>
+        <div style={{ maxWidth: '1000px', margin: 'auto', padding: '20px', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', backgroundColor: '#f9f9f9', color: '#333', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
+            <h2 style={{ color: '#008080', marginBottom: '20px' }}>Subjects</h2>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <table style={{ width: '80%', borderCollapse: 'collapse', marginTop: '20px', borderRadius: '8px', overflow: 'hidden', backgroundColor: '#fff' }}>
+                    <thead>
+                        <tr style={{ backgroundColor: '#008080', color: '#fff', textAlign: 'left' }}>
+                            <th style={{ padding: '12px' }}>Year</th>
+                            <th style={{ padding: '12px' }}>Semester</th>
+                            <th style={{ padding: '12px' }}>Subject ID</th>
+                            <th style={{ padding: '12px' }}>Subject Name</th>
+                            <th style={{ padding: '12px' }}>Credits</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {subjects.map((subject, index) => (
+                            <tr key={subject._id} style={{ backgroundColor: index % 2 === 0 ? '#f1f1f1' : '#fff', borderBottom: '1px solid #ddd' }}>
+                                <td style={{ padding: '12px' }}>{subject.year}</td>
+                                <td style={{ padding: '12px' }}>{subject.semester}</td>
+                                <td style={{ padding: '12px' }}>{subject.subjectId}</td>
+                                <td style={{ padding: '12px' }}>{subject.subjectName}</td>
+                                <td style={{ padding: '12px' }}>{subject.credit}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                <button style={{ ...buttonStyle, backgroundColor: '#007BFF' }} onClick={() => navigate('/subjectadd')}>Add Subject</button>
+                <button style={{ ...buttonStyle, backgroundColor: '#28A745' }} onClick={() => navigate('/enrollsubject')}>Enroll Student</button>
+                <button style={{ ...buttonStyle, backgroundColor: '#FFC107', color: '#000' }} onClick={() => navigate('/enrolllec')}>Enroll Lecturer</button>
+                <button style={{ ...buttonStyle, backgroundColor: '#DC3545' }} onClick={() => navigate('/removesubject')}>Remove Subject</button>
+            </div>
         </div>
-        <div>
-            <button type="button" onClick={() => navigate('/subjectadd')}> Go Add Subject</button>
-        </div>
-        <div>
-            <button type="button" onClick={() => navigate('/enrollsubject')}> Enroll Student to Subject</button>
-        </div>
-        <div>
-            <button type="button" onClick={() => navigate('/enrolllec')}> Enroll Lectures</button>
-        </div>
-        <div>
-            <button type="button" onClick={() => navigate('/removesubject')}> Remove Subject</button>
-        </div>
-        </>
     );
+};
+
+const buttonStyle = {
+    color: '#fff',
+    padding: '12px 20px',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    transition: 'background 0.3s ease, transform 0.2s ease',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
 };
 
 export default SubjectList;
