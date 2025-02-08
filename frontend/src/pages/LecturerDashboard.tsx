@@ -31,17 +31,13 @@ const LecturerDashboard: React.FC = () => {
       try {
         setLoading(true);
         setError("");
-
         if (!username) {
           setError("Username is required. Please log in.");
           return;
         }
-
-        // ✅ Fixed: Corrected string interpolation in the API call
         const response = await axios.get(
           `http://localhost:5001/api/lecenrollments/bylecturer/${username}`
         );
-
         setEnrollments(response.data);
       } catch (err: any) {
         setError("Failed to load enrollments. Please try again.");
@@ -49,24 +45,20 @@ const LecturerDashboard: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchEnrollments();
   }, [username]);
 
   if (loading) return <div style={{ textAlign: "center", fontSize: "20px", marginTop: "20px" }}>Loading...</div>;
   if (error) return <div style={{ textAlign: "center", color: "red", marginTop: "20px" }}>{error}</div>;
 
-  // ✅ Fixed: Corrected string interpolation for "year" and "semester"
   const groupedEnrollments = enrollments.reduce((acc, enrollment) => {
     const year = enrollment.subjectDetails?.year;
     const semester = enrollment.subjectDetails?.semester;
-    
     if (year && semester) {
-      const key = `${year}-${semester}`; // ✅ Corrected template literal
+      const key = `${year}-${semester}`;
       if (!acc[key]) acc[key] = [];
       acc[key].push(enrollment);
     }
-
     return acc;
   }, {} as Record<string, LecEnrollment[]>);
 
