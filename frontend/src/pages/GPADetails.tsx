@@ -82,7 +82,7 @@ const GPAdetails: React.FC = () => {
   };
   
   return (
-    <div style={{backgroundColor:"#84B6BDFF" }}>
+    <div style={{backgroundColor:"rgb(196, 243, 225)" }}>
     <div style={{ padding: "20px" }}>
       <div style={{ display: 'flex', flexDirection: 'column'  }}>
 
@@ -93,9 +93,9 @@ const GPAdetails: React.FC = () => {
         justifyContent: "space-between", 
         alignItems: "center", 
         padding: "30px", 
-        backgroundColor: 'rgb(212, 240, 250)', 
+        backgroundColor: 'rgb(252, 254, 255)', 
         borderRadius: "10px", 
-        marginTop:"10px",
+        marginTop:"20px",
         marginBottom: "20px", 
         boxShadow: "0 5px 8px rgba(0, 0, 0, 0.1)"
       }}>

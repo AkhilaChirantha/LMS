@@ -23,13 +23,12 @@ const AddGradesForm: React.FC = () => {
   }, [subjectIdFromDashboard]);
 
   const fetchEnrollments = async () => {
+    if (!subjectId) return; // Ensure subjectId exists before making API call
     try {
-      if (!subjectId) return;
-      const response = await axios.get(`http://localhost:5001/api/enrolments/allresult?subjectId=${subjectId}`);
-      const filteredEnrollments = response.data.filter(
-        (enrollment: Enrollment) => enrollment.subjectId === subjectId
+      const response = await axios.get(
+        `http://localhost:5001/api/enrolments/allresult?subjectId=${subjectId}`
       );
-      setEnrollments(filteredEnrollments);
+      setEnrollments(response.data);
     } catch (error) {
       console.error('Error fetching enrollments:', error);
     }
@@ -64,55 +63,97 @@ const AddGradesForm: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      backgroundColor: '#3eb9e4', 
-      minHeight: '100vh', 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center',
-      padding: '20px'
-    }}>
-      <div style={{
-        backgroundColor: 'rgba(229, 227, 227, 0.44)',
+    <div
+      style={{
+        background: 'linear-gradient(to right, #fef9d7, #d299c2)',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(28, 27, 27, 0.1)',
-        maxWidth: '800px',
-        width: '100%',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ marginBottom: '10px', color: '#333' }}>Manage Grades for {subjectId}</h2>
-        <h3 style={{ color: '#666' }}>Enrolled Students</h3>
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          maxWidth: '800px',
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
+        <h2 style={{ marginBottom: '10px', color: '#333', fontWeight: 'bold' }}>
+          Manage Grades for {subjectId}
+        </h2>
+        <h3 style={{ color: '#666', marginBottom: '20px' }}>Enrolled Students</h3>
         {enrollments.length > 0 ? (
-          <table style={{ 
-            width: '100%', 
-            borderCollapse: 'collapse', 
-            marginTop: '20px',
-            backgroundColor: '#fff',
-            borderRadius: '8px',
-            overflow: 'hidden'
-          }}>
-            <thead style={{ backgroundColor: '#aaacaa', color: 'white' }}>
-              <tr>
-                <th style={{ padding: '10px', textAlign: 'left' }}>Username</th>
-                <th style={{ padding: '10px', textAlign: 'left' }}>Grade</th>
-                <th style={{ padding: '10px', textAlign: 'center' }}>Fix Grade</th>
+          <table
+            style={{
+              width: '100%',
+              borderCollapse: 'separate',
+              borderSpacing: '0 10px',
+              marginTop: '20px',
+            }}
+          >
+            <thead>
+              <tr
+                style={{
+                  backgroundColor: '#4db8ff',
+                  color: 'white',
+                  borderRadius: '8px',
+                }}
+              >
+                <th
+                  style={{
+                    padding: '12px',
+                    textAlign: 'left',
+                    borderTopLeftRadius: '8px',
+                    borderBottomLeftRadius: '8px',
+                  }}
+                >
+                  Username
+                </th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Grade</th>
+                <th
+                  style={{
+                    padding: '12px',
+                    textAlign: 'center',
+                    borderTopRightRadius: '8px',
+                    borderBottomRightRadius: '8px',
+                  }}
+                >
+                  Fix Grade
+                </th>
               </tr>
             </thead>
             <tbody>
               {enrollments.map((enrollment, index) => (
-                <tr key={index} style={{ borderBottom: '1px solid #ddd', backgroundColor: '#f9f9f9'}}>
-                  <td style={{ padding: '10px' }}>{enrollment.username}</td>
-                  <td style={{ padding: '10px' }}>
+                <tr
+                  key={index}
+                  style={{
+                    backgroundColor: '#fff',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    marginBottom: '10px',
+                  }}
+                >
+                  <td style={{ padding: '12px', borderRadius: '8px 0 0 8px' }}>
+                    {enrollment.username}
+                  </td>
+                  <td style={{ padding: '12px' }}>
                     <select
                       value={enrollment.grade}
                       onChange={(e) => handleGradeChange(index, e.target.value)}
                       disabled={enrollment.isFixed}
                       style={{
                         width: '100%',
-                        padding: '5px',
+                        padding: '8px',
                         borderRadius: '5px',
-                        border: '1px solid #ccc'
+                        border: '1px solid #ccc',
+                        backgroundColor: enrollment.isFixed ? '#e0e0e0' : 'white',
+                        cursor: enrollment.isFixed ? 'not-allowed' : 'pointer',
                       }}
                     >
                       <option value="A+">A+</option>
@@ -129,11 +170,12 @@ const AddGradesForm: React.FC = () => {
                       <option value="E">E</option>
                     </select>
                   </td>
-                  <td style={{ padding: '10px', textAlign: 'center' }}>
+                  <td style={{ padding: '12px', textAlign: 'center', borderRadius: '0 8px 8px 0' }}>
                     <input
                       type="checkbox"
                       checked={enrollment.isFixed}
                       onChange={() => handleCheckboxChange(index)}
+                      style={{ transform: 'scale(1.2)' }}
                     />
                   </td>
                 </tr>

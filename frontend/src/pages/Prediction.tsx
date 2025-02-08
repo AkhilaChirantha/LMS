@@ -20,8 +20,8 @@ interface Subject {
 // First Section --In this section shows all the content. here is the place that calling the following sections.
 const PredictionPage: React.FC = () => {
   const location = useLocation();
-
   const semesterGPAValues: SemesterGPA[] = location.state?.semesterGPAValues || [];
+  const [requiredGPA, setRequiredGPA] = useState<number | null>(null);
 
   if (semesterGPAValues.length === 0) {
     return <p>No GPA details available. Please navigate from the dashboard to view details.</p>;
@@ -30,71 +30,67 @@ const PredictionPage: React.FC = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Prediction Page</h1>
-        <CurrentGPATable semesterGPAValues={semesterGPAValues} />
-        <Prediction semesterGPAValues={semesterGPAValues} />
+      <CurrentGPATable semesterGPAValues={semesterGPAValues} setRequiredGPA={setRequiredGPA} />
+      <Prediction semesterGPAValues={semesterGPAValues} requiredGPA={requiredGPA} />
     </div>
   );
 };
 
 // 2 nd Section -- here is the code that creating functionalities and interface.
-const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semesterGPAValues }) => {
-
+const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[], setRequiredGPA: (gpa: number | null) => void }> = ({ semesterGPAValues, setRequiredGPA }) => {
   const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
 
-  // Determine the next semester to fetch subjects for
+  const currentGPA = useMemo(() => {
+    const validSemesters = semesterGPAValues.filter((sem) => sem.semGPA > 0);
+    const totalGPA = validSemesters.reduce((sum, sem) => sum + sem.semGPA, 0);
+    return validSemesters.length > 0 ? totalGPA / validSemesters.length : 0;
+  }, [semesterGPAValues]);
+
+  const calculateGPAToNextClass = (currentGPA: number): number | null => {
+    if (currentGPA >= 3.7) return null;
+    if (currentGPA >= 3.2) return (3.7 * 2 - currentGPA);
+    if (currentGPA >= 2.7) return (3.2 * 2 - currentGPA);
+    if (currentGPA >= 2.0) return (2.7 * 2 - currentGPA);
+    return (2.0 * 2 - currentGPA);
+  };
+
+  const requiredGPA = calculateGPAToNextClass(currentGPA);
+  useEffect(() => { setRequiredGPA(requiredGPA); }, [requiredGPA, setRequiredGPA]);
+
+
+
   const nextSemester = useMemo(() => {
     if (semesterGPAValues.length === 0) return null;
-
-    // Find the first semester with zero GPA
     const zeroGPASemester = semesterGPAValues.find(sem => sem.semGPA === 0);
-
     if (zeroGPASemester) {
-      return {
-        year: zeroGPASemester.year,
-        semester: zeroGPASemester.semester
-      };
+      return { year: zeroGPASemester.year, semester: zeroGPASemester.semester };
     }
-
-    // If no zero GPA semester, fall back to previous logic
     const sortedSemesters = [...semesterGPAValues].sort((a, b) => {
       if (a.year !== b.year) return parseInt(a.year) - parseInt(b.year);
       return a.semester === 'First' ? -1 : 1;
     });
-
     const lastSemester = sortedSemesters[sortedSemesters.length - 1];
-    
-    // Determine next semester
     let nextYear = lastSemester.year;
     let nextSemesterName = 'Second';
-
-    // If last semester is Second, move to next year's First semester
     if (lastSemester.semester === 'Second') {
       nextYear = (parseInt(lastSemester.year) + 1).toString();
       nextSemesterName = 'First';
     }
-
     return { year: nextYear, semester: nextSemesterName };
   }, [semesterGPAValues]);
 
-  // Fetch subjects for the next semester
   useEffect(() => {
     const fetchNextSemesterSubjects = async () => {
       if (!nextSemester) return;
-
       try {
         const response = await axios.get<Subject[]>('http://localhost:5001/api/subjects/sem', {
-          params: {
-            year: nextSemester.year,
-            semester: nextSemester.semester
-          }
+          params: { year: nextSemester.year, semester: nextSemester.semester }
         });
-
         setNextSemesterSubjects(response.data);
       } catch (error) {
         console.error('Failed to fetch next semester subjects:', error);
       }
     };
-
     fetchNextSemesterSubjects();
   }, [nextSemester]);
 
@@ -121,174 +117,134 @@ const CurrentGPATable: React.FC<{ semesterGPAValues: SemesterGPA[] }> = ({ semes
     return yearGroups;
   }, [semesterGPAValues]);
 
-  // Calculate overall current GPA
-  const currentGPA = useMemo(() => {
-    const validSemesters = semesterGPAValues.filter((sem) => sem.semGPA > 0);
-    const totalGPA = validSemesters.reduce((sum, sem) => sum + sem.semGPA, 0);
-    return validSemesters.length > 0 ? totalGPA / validSemesters.length : 0;
-  }, [semesterGPAValues]);
 
-  const getDegreeClassification = (currentGPA: number): string => {
-    if (currentGPA >= 3.7) return "First Class Degree";
-    if (currentGPA >= 3.2) return "Second Upper Class Degree";
-    if (currentGPA >= 2.7) return "Second Lower Class Degree";
-    if (currentGPA >= 2.0) return "General Class Degree";
-    return "Below Degree Classification";
+  const getClass = (gpa: number) => {
+    if (gpa >= 3.7) return "First Class";
+    if (gpa >= 3.2) return "Second Upper";
+    if (gpa >= 2.7) return "Second Lower";
+    if (gpa >= 2.0) return "General";
+    return "Fail";
   };
 
-  const calculateGPAToNextClass = (currentGPA: number): {
-    currentClass: string;
-    nextClass: string | null;
-    requiredGPA: number | null;
-  } => {
-    let currentClass = "";
-    let nextClass: string | null = null;
-    let nextClassThreshold = 0;
-
-    if (currentGPA >= 3.7) {
-      currentClass = "First Class Degree";
-      nextClass = null;
-      return { currentClass, nextClass, requiredGPA: null };
-    } else if (currentGPA >= 3.2) {
-      currentClass = "Second Upper Class Degree";
-      nextClass = "First Class Degree";
-      nextClassThreshold = 3.7;
-    } else if (currentGPA >= 2.7) {
-      currentClass = "Second Lower Class Degree";
-      nextClass = "Second Upper Class Degree";
-      nextClassThreshold = 3.2;
-    } else if (currentGPA >= 2.0) {
-      currentClass = "General Class Degree";
-      nextClass = "Second Lower Class Degree";
-      nextClassThreshold = 2.7;
-    } else {
-      currentClass = "Below Degree Classification";
-      nextClass = "General Class Degree";
-      nextClassThreshold = 2.0;
-    }
-
-    // Simplified required GPA calculation
-    const totalSemesters = useMemo(() => {
-      const uniqueSemesters = new Set(
-        semesterGPAValues.map((sem) => `${sem.year}-${sem.semester}`)
-      );
-      return uniqueSemesters.size;
-    }, [semesterGPAValues]); 
-
-    const requiredGPA = (nextClassThreshold * totalSemesters  ) - currentGPA ;
-
-    return {
-      currentClass,
-      nextClass,
-      requiredGPA: requiredGPA > 0 ? requiredGPA : null,
-    };
+  const getNextClass = (gpa: number) => {
+    if (gpa >= 3.7) return null;
+    if (gpa >= 3.2) return "First Class";
+    if (gpa >= 2.7) return "Second Upper";
+    if (gpa >= 2.0) return "Second Lower";
+    return "General";
   };
 
-  const degreeClassification = getDegreeClassification(currentGPA);
-  const { nextClass, requiredGPA } = calculateGPAToNextClass(currentGPA);
+
+  const currentClass = getClass(currentGPA);
+  const nextClass = getNextClass(currentGPA);
 
   return (
-    <div style={{ width: "100%", marginTop: "20px" }}>
-      <h2>Semester-Wise GPA Calculation</h2>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+<div style={{ width: "100%", marginTop: "20px", fontFamily: "Arial, sans-serif", color: "#333" }}>
+  <h3 style={{ textAlign: "center", color: "#007bff", marginBottom: "20px" }}>
+    Semester-Wise GPA Calculation
+  </h3>
+
+  <table style={{ width: "100%", borderCollapse: "collapse", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}>
+    <thead>
+      <tr style={{ backgroundColor: "#007bff", color: "white" }}>
+        <th style={{ padding: "12px", border: "1px solid #ddd" }}>Year</th>
+        <th style={{ padding: "12px", border: "1px solid #ddd" }}>Semester</th>
+        <th style={{ padding: "12px", border: "1px solid #ddd" }}>Semester GPA</th>
+        <th style={{ padding: "12px", border: "1px solid #ddd" }}>Year GPA</th>
+      </tr>
+    </thead>
+    <tbody>
+      {Object.entries(yearWiseData).flatMap(([year, data]) =>
+        data.semesters.map((sem, index) => (
+          <tr key={`${year}-${sem.semester}`} style={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", textAlign: "center" }}>
+            {index === 0 && (
+              <td rowSpan={data.semesters.length} style={{ padding: "12px", border: "1px solid #ddd", fontWeight: "bold" }}>
+                {year}
+              </td>
+            )}
+            <td style={{ padding: "12px", border: "1px solid #ddd" }}>{sem.semester}</td>
+            <td style={{ padding: "12px", border: "1px solid #ddd", fontWeight: "bold", color: "#28a745" }}>
+              {sem.semGPA.toFixed(2)}
+            </td>
+            {index === 0 && (
+              <td rowSpan={data.semesters.length} style={{ padding: "12px", border: "1px solid #ddd", fontWeight: "bold", color: "#dc3545" }}>
+                {data.yearGPA.toFixed(2)}
+              </td>
+            )}
+          </tr>
+        ))
+      )}
+      <tr style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}>
+        <td colSpan={3} style={{ padding: "12px", border: "1px solid #ddd", paddingLeft:'30px',backgroundColor:'#cbc8cb' }}>
+          Cumulative GPA
+        </td>
+        <td style={{ padding: "12px", border: "1px solid #ddd", color: "#007bff", textAlign: "center", backgroundColor:'#cbc8cb'  }}>
+          {currentGPA.toFixed(2)}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
+    <p style={{ fontSize: "18px" }}>
+      The Current GPA Value is 
+      <span style={{ fontSize: "22px", fontWeight: "bold", color: "#007bff", }}> {currentGPA.toFixed(2)} </span>
+      Current Class of Degree is <span style={{ fontSize: "22px", fontWeight: "bold", color: "#007bff", }}>{currentClass}</span>
+    </p>
+    {requiredGPA !== null ? (
+      <p style={{ fontSize: "16px", color: "#6c757d" }}>
+        You can Achieve <span style={{ fontSize: "20px", fontWeight: "bold", color: "#28a745" }}>{nextClass}</span> degree in next Semester.
+        For that you need a GPA of <span style={{ fontSize: "20px", fontWeight: "bold", color: "#28a745" }}>{requiredGPA.toFixed(2)}</span>
+      </p>
+    ) : (
+      <p style={{ fontSize: "16px", color: "#6c757d" }}>You are already at the highest degree classification.</p>
+    )}
+  </div>
+
+  {/* Next Semester Subjects Section */}
+  <div style={{ marginTop: "20px" }}>
+    <h3 style={{ color: "#007bff", marginBottom: "15px" }}>
+      Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})
+    </h3>
+    {nextSemesterSubjects.length > 0 ? (
+      <table style={{ width: "100%", borderCollapse: "collapse", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}>
         <thead>
-          <tr>
-            <th style={{ border: "1px solid black", padding: "10px" }}>Year</th>
-            <th style={{ border: "1px solid black", padding: "10px" }}>Semester</th>
-            <th style={{ border: "1px solid black", padding: "10px" }}>Semester GPA</th>
-            <th style={{ border: "1px solid black", padding: "10px" }}>Year GPA</th>
+          <tr style={{ backgroundColor: "#28a745", color: "white" }}>
+            <th style={{ padding: "12px", border: "1px solid #ddd" }}>Subject ID</th>
+            <th style={{ padding: "12px", border: "1px solid #ddd" }}>Subject Name</th>
+            <th style={{ padding: "12px", border: "1px solid #ddd" }}>Credits</th>
           </tr>
         </thead>
         <tbody>
-          {Object.entries(yearWiseData).flatMap(([year, data]) => 
-            data.semesters.map((sem, index) => (
-              <tr key={`${year}-${sem.semester}`}>
-                {index === 0 && (
-                  <td 
-                    style={{ border: "1px solid black", padding: "10px" }} 
-                    rowSpan={data.semesters.length}
-                  >
-                    {year}
-                  </td>
-                )}
-                <td style={{ border: "1px solid black", padding: "10px" }}>
-                  {sem.semester}
-                </td>
-                <td style={{ border: "1px solid black", padding: "10px" }}>
-                  {sem.semGPA.toFixed(2)}
-                </td>
-                {index === 0 && (
-                  <td 
-                    style={{ border: "1px solid black", padding: "10px" }} 
-                    rowSpan={data.semesters.length}
-                  >
-                    {data.yearGPA.toFixed(2)}
-                  </td>
-                )}
-              </tr>
-            ))
-          )}
-          <tr>
-            <td colSpan={3} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
-              Cumulative GPA
-            </td>
-            <td colSpan={1} style={{ border: "1px solid black", padding: "10px", fontWeight: "bold" }}>
-              {currentGPA.toFixed(2)}
-            </td>
-          </tr>
+          {nextSemesterSubjects.map((subject, index) => (
+            <tr key={subject.subjectId} style={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", textAlign: "center" }}>
+              <td style={{ padding: "12px", border: "1px solid #ddd", fontWeight: "bold" }}>{subject.subjectId}</td>
+              <td style={{ padding: "12px", border: "1px solid #ddd" }}>{subject.subjectName}</td>
+              <td style={{ padding: "12px", border: "1px solid #ddd", fontWeight: "bold", color: "#28a745" }}>{subject.credit}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      <div style={{ marginTop: "20px" }}>
-        <p><strong>Degree Classification:</strong> <strong style={{color:'#ec08d8', fontSize:'20px'}}>{degreeClassification}</strong> </p>
-        {nextClass && requiredGPA !== null ? (
-          <p>
-            To achieve a <strong>{nextClass}</strong>, you need a GPA of <strong>{requiredGPA.toFixed(2)}</strong>.
-          </p>
-        ) : (
-          <p>You are already at the highest degree classification.</p>
-        )}
-      </div>
+    ) : (
+      <p style={{ fontSize: "16px", color: "#6c757d" }}>No subjects found for the next semester.</p>
+    )}
+  </div>
+</div>
 
-      {/* Next Semester Subjects Section */}
-      <div style={{ marginTop: "20px" }}>
-        <h3>Next Semester Subjects ({nextSemester?.year} {nextSemester?.semester})</h3>
-        {nextSemesterSubjects.length > 0 ? (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Subject ID</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Subject Name</th>
-                <th style={{ border: "1px solid black", padding: "10px" }}>Credits</th>
-              </tr>
-            </thead>
-            <tbody>
-              {nextSemesterSubjects.map((subject) => (
-                <tr key={subject.subjectId}>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectId}</td>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.subjectName}</td>
-                  <td style={{ border: "1px solid black", padding: "10px" }}>{subject.credit}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No subjects found for the next semester.</p>
-        )}
-      </div>
-    </div>
+  
   );
 };
 
 
+
 // 3 rd Section -- This section is used for the prediction to the next semester credits.
-const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAValues}) => { 
+const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[], requiredGPA: number | null }>= ({ semesterGPAValues, requiredGPA }) => { 
   const [nextSemesterSubjects, setNextSemesterSubjects] = useState<Subject[]>([]);
-  const [allCombinations, setAllCombinations] = useState<
+  const [filteredCombinations, setFilteredCombinations] = useState<
     { combination: string[]; totalPoints: number; gpa: number }[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Determine next semester
   const nextSemester = useMemo(() => {
     if (semesterGPAValues.length === 0) return null;
 
@@ -315,17 +271,14 @@ const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAV
     return { year: nextYear, semester: nextSemesterName };
   }, [semesterGPAValues]);
 
-  // Grade mapping
   const grades: { [key: string]: number } = {
-    A: 4.0, "A-": 3.7, "B+": 3.3, B: 3.0, "B-": 2.7, "C+": 2.3, C: 2.0,
+    "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7, "C+": 2.3, "C": 2.0,
   };
 
-  // Compute total credits
   const totalCredits = useMemo(() => {
     return nextSemesterSubjects.reduce((sum, subject) => sum + subject.credit, 0);
   }, [nextSemesterSubjects]);
 
-  // Calculate total points
   const calculateTotalPoints = (combination: string[]): number => {
     return combination.reduce((total, grade, index) => {
       const credit = nextSemesterSubjects[index]?.credit || 0;
@@ -333,25 +286,20 @@ const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAV
     }, 0);
   };
 
-  // Generate all possible grade combinations
   const generateGradeCombinations = (gradesList: string[], repeat: number): string[][] => {
     if (repeat === 0) return [[]];
     const smallerCombinations = generateGradeCombinations(gradesList, repeat - 1);
     return gradesList.flatMap(grade => smallerCombinations.map(combination => [grade, ...combination]));
   };
 
-  // Fetch subjects
   useEffect(() => {
     const fetchSubjects = async () => {
       if (!nextSemester) return;
-
       try {
         setIsLoading(true);
         const response = await axios.get<Subject[]>('http://localhost:5001/api/subjects/sem', {
           params: { year: nextSemester.year, semester: nextSemester.semester }
         });
-
-        console.log('Fetched subjects:', response.data);
         setNextSemesterSubjects(response.data);
       } catch (error) {
         console.error('Failed to fetch subjects:', error);
@@ -359,59 +307,59 @@ const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAV
         setIsLoading(false);
       }
     };
-
     fetchSubjects();
   }, [nextSemester]);
 
-  // Generate all grade combinations when subjects are available
   useEffect(() => {
     if (nextSemesterSubjects.length === 0) return;
-
     const gradesList = Object.keys(grades);
     const gradeCombinations = generateGradeCombinations(gradesList, nextSemesterSubjects.length);
 
-    console.log('Generated combinations:', gradeCombinations.length);
-
-    // Calculate GPA for each combination
     const calculatedResults = gradeCombinations.map((combination) => {
       const totalPoints = calculateTotalPoints(combination);
       const gpa = totalPoints / totalCredits;
       return { combination, totalPoints, gpa };
     });
 
-    console.log('Generated all grade combinations:', calculatedResults);
-    setAllCombinations(calculatedResults);
-  }, [nextSemesterSubjects]);
+    let filteredResults = calculatedResults;
+    if (requiredGPA !== null) {
+      const higherMatches = calculatedResults.filter(result => result.gpa >= requiredGPA);
+      if (higherMatches.length > 0) {
+        const minHigherGPA = Math.min(...higherMatches.map(result => result.gpa));
+        filteredResults = higherMatches.filter(result => result.gpa === minHigherGPA);
+      } else {
+        filteredResults = [];
+      }
+    }
+    setFilteredCombinations(filteredResults);
+  }, [nextSemesterSubjects, requiredGPA]);
 
-  if (isLoading) {
-    return <div>Loading subjects and generating grade combinations...</div>;
-  }
-
-  if (nextSemesterSubjects.length === 0) {
-    return <div>No subjects found for the next semester.</div>;
-  }
+  if (isLoading) return <div>Loading subjects and generating grade combinations...</div>;
+  if (nextSemesterSubjects.length === 0) return <div>No subjects found for the next semester.</div>;
 
   return (
     <div>
-      <div style={{ fontSize: '30px', paddingTop: '50px', fontFamily: 'Gotu', color: 'red' }}>
+      <h2 style={{ fontSize: '30px', paddingTop: '50px', fontFamily: 'Gotu', color: 'red' }}>
         Prediction Combination
-      </div>
-      <div>
-        <p>Number of subjects: {nextSemesterSubjects.length}</p>
-        <p>Total credits: {totalCredits}</p>
-      </div>
-      <table border={1} style={{ width: "100%", textAlign: "left" }}>
-        <thead>
-          <tr>
+      </h2>
+      <p>Number of subjects: {nextSemesterSubjects.length}</p>
+      <p>Total credits: {totalCredits}</p>
+      {requiredGPA !== null && <p>Required GPA for next classification: {requiredGPA.toFixed(2)}</p>}
+
+      <div style={{ fontFamily: 'Gotu', fontSize: '20px', color: 'red' }}>To Achieve that GPA, You should achieve this Target in your next Semester. </div>
+      <table border={1} style={{ width: '100%', textAlign: 'left' }}>
+        <thead style={{ backgroundColor: '#007bff', color: 'white' }}>
+          <tr >
             <th>Subject</th>
             <th>Credit</th>
             <th>Grade</th>
             <th>GPA</th>
           </tr>
         </thead>
+        <br></br>
         <tbody>
-          {allCombinations.length > 0 ? (
-            allCombinations.map((result, index) => (
+          {filteredCombinations.length > 0 ? (
+            filteredCombinations.map((result, index) => (
               <React.Fragment key={index}>
                 {nextSemesterSubjects.map((subject, i) => (
                   <tr key={`${index}-${i}`}>
@@ -423,23 +371,24 @@ const Prediction: React.FC<{ semesterGPAValues: SemesterGPA[] }>= ({semesterGPAV
                     )}
                   </tr>
                 ))}
-                <br></br>
-                <tr className="h-4" />
+                <br/>
               </React.Fragment>
             ))
           ) : (
             <tr>
-              <td colSpan={4} style={{ textAlign: "center" }}>
-                No grade combinations generated.
+              <td colSpan={4} style={{ textAlign: 'center' }}>
+                No matching grade combinations found.
               </td>
             </tr>
           )}
         </tbody>
       </table>
-      <p>Total grade combinations: {allCombinations.length}</p>
+      <p>Total filtered grade combinations: {filteredCombinations.length}</p>
     </div>
   );
 };
+
+
 
 
 
