@@ -20,7 +20,7 @@ const SubjectList: React.FC = () => {
     }, []);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh',background:'rgba(246, 177, 231, 0.2)' }}>
             <div style={{ width: '90%', maxWidth: '1000px', padding: '20px', borderRadius: '12px', boxShadow: ' 2px 4px 10px rgba(0, 0, 0, 0.2)', backgroundColor: '#f9f9f9', color: '#333', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
                 <h2 style={{ color: '#008080', marginBottom: '20px' }}>Subjects</h2>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
