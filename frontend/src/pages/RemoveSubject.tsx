@@ -33,7 +33,7 @@ const RemoveSubject: React.FC = () => {
         }
         
         try {
-            await Promise.all(selectedSubjects.map(subjectId => axios.delete(`http://localhost:5001/api/subjects/${subjectId}`)));
+            await Promise.all(selectedSubjects.map(subjectId => axios.delete(`http://localhost:5001/api/subjects/remove/${subjectId}`)));
             setSubjects(prevSubjects => prevSubjects.filter(subject => !selectedSubjects.includes(subject._id)));
             setSelectedSubjects([]);
             alert('Selected subjects removed successfully.');
@@ -44,39 +44,72 @@ const RemoveSubject: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: '900px', margin: 'auto', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
-            <h2 style={{ textAlign: 'center' }}>Remove Subject</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                <thead>
-                    <tr style={{ backgroundColor: '#f4f4f4' }}>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Select</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Year</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Semester</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Subject ID</th>
-                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '1px solid #ddd' }}>Subject Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {subjects.map((subject) => (
-                        <tr key={subject._id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>
-                                <input
-                                    type="checkbox"
-                                    value={subject._id}
-                                    checked={selectedSubjects.includes(subject._id)}
-                                    onChange={() => handleCheckboxChange(subject._id)}
-                                />
-                            </td>
-                            <td style={{ padding: '10px' }}>{subject.year}</td>
-                            <td style={{ padding: '10px' }}>{subject.semester}</td>
-                            <td style={{ padding: '10px' }}>{subject.subjectId}</td>
-                            <td style={{ padding: '10px' }}>{subject.subjectName}</td>
+        <div style={{
+            background: 'linear-gradient(to right, #fef9d7, #d299c2)',
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '20px'
+        }}>
+            <div style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                padding: '30px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                maxWidth: '900px',
+                width: '100%',
+                textAlign: 'center'
+            }}>
+                <h2 style={{ color: '#333', fontWeight: 'bold', marginBottom: '20px' }}>Remove Subject</h2>
+                <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+                    <thead>
+                        <tr style={{ backgroundColor: '#4db8ff', color: 'white' }}>
+                            <th style={{ padding: '10px', textAlign: 'left' }}>Select</th>
+                            <th style={{ padding: '10px', textAlign: 'left' }}>Year</th>
+                            <th style={{ padding: '10px', textAlign: 'left' }}>Semester</th>
+                            <th style={{ padding: '10px', textAlign: 'left' }}>Subject ID</th>
+                            <th style={{ padding: '10px', textAlign: 'left' }}>Subject Name</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <button type="button" onClick={handleRemoveSubjects} style={{ padding: '10px 20px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '5px' }}>Remove Selected Subjects</button>
+                    </thead>
+                    <tbody>
+                        {subjects.map((subject) => (
+                            <tr key={subject._id} style={{ backgroundColor: '#fff', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
+                                <td style={{ padding: '10px' }}>
+                                    <input
+                                        type="checkbox"
+                                        value={subject._id}
+                                        checked={selectedSubjects.includes(subject._id)}
+                                        onChange={() => handleCheckboxChange(subject._id)}
+                                        style={{ marginRight: '10px' }}
+                                    />
+                                </td>
+                                <td style={{ padding: '10px' }}>{subject.year}</td>
+                                <td style={{ padding: '10px' }}>{subject.semester}</td>
+                                <td style={{ padding: '10px' }}>{subject.subjectId}</td>
+                                <td style={{ padding: '10px' }}>{subject.subjectName}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                    <button
+                        type="button"
+                        onClick={handleRemoveSubjects}
+                        style={{
+                            padding: '12px 20px',
+                            backgroundColor: '#4db8ff',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        Remove Selected Subjects
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -48,4 +48,23 @@ subjectRouter.get('/sem', async (req, res) => {
     }
 });
 
+// Delete a subject by subjectId
+subjectRouter.delete('/remove/:subjectId', async (req, res) => {
+    const { subjectId } = req.params;
+
+    try {
+        const deletedSubject = await Subject.findByIdAndDelete(subjectId);
+
+        if (!deletedSubject) {
+            res.status(404).json({ message: 'Subject not found' });
+            return;
+        }
+
+        res.status(200).json({ message: 'Subject deleted successfully', subject: deletedSubject });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete subject', error });
+    }
+});
+
+
 export default subjectRouter;
